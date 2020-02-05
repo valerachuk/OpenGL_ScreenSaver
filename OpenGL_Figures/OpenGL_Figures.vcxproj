@@ -160,18 +160,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
-    <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Figures_data.cpp" />
-    <ClCompile Include="GLRenderSystem.cpp" />
-    <ClCompile Include="GLWindow.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="Window.cpp" />
     <ClCompile Include="OpenGL_Figures.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
-    <ClInclude Include="Figure.h" />
-    <ClInclude Include="GLRenderSystem.h" />
-    <ClInclude Include="GLWindow.h" />
+    <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="Window.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,23 +6,25 @@
 #include <glm\glm.hpp>
 #include "Shader.h"
 
-class GLRenderSystem
+class RenderSystem
 {
 private:
 	glm::vec4 _color;
-	glm::mat4 _figureTransform;
+	glm::mat4 _ShapeTransform;
 
-	Shader _shader;
+	std::unique_ptr<Shader> _shader;
 
 	void sendUniformsToShader();
+	RenderSystem();
+	void checkSahder() const;
 
 public:
-	GLRenderSystem(const Shader& shader);
+	static RenderSystem& getInstance();
 
 	static void clearDisplay(float red, float green, float blue);
 
-	void render(GLuint VAO, GLuint verticesCount);
+	void render(GLuint VAO, size_t verticesCount);
 	
 	void setColor(const glm::vec4& color);
-	void setFigureTransform(const glm::mat4&);
+	void setShapeTransform(const glm::mat4&);
 };

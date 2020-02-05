@@ -4,7 +4,7 @@
 #include "Buffer.h"
 #include "IDrawable.h"
 
-class Figure: public IDrawable {
+class Shape: public IDrawable {
 private:
 	const int DEFORM_FACTOR = 2;
 
@@ -16,11 +16,12 @@ private:
 	std::shared_ptr<Buffer> _buffer;
 	
 	void clampPos();
-	glm::mat4 calcModelMatrix();
+	glm::mat4 calcShapeMatrix();
 
 	const glm::vec2& getScale() const;
 	const glm::vec2& getPos() const;
 	const glm::vec4& getColor() const;
+	const Buffer& getBuffer() const;
 
 public:
 	void setScale(const glm::vec2&);
@@ -33,11 +34,10 @@ public:
 	bool getDeformed() const;
 	void setDeformed(bool);
 
-	const Buffer& getBuffer() const;
 	void translate(const glm::vec2&);
-	bool isOtherCollision(const Figure&);
-	void Draw(GLRenderSystem&) override;
+	bool isOtherCollision(const Shape&);
+	void draw() override;
 
-	Figure(std::shared_ptr<Buffer>);
+	Shape(std::shared_ptr<Buffer>);
 
 };

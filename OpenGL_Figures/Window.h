@@ -20,13 +20,6 @@ enum class Action {
 	Repeat = 2,
 };
 
-enum class ButtonCode {
-	UNKNOWN = -1,
-	Left = 0,
-	Right = 1,
-	Middle = 2,
-};
-
 enum class KeyCode {
 	UNKNOWN = -1,
 	Space = 32,
@@ -59,12 +52,18 @@ enum class KeyCode {
 	F12 = 301,
 };
 
-class GLWindow {
-public:
+class Window {
+private:
 	using KeyCallback = std::function<void(KeyCode, Action, Modifier)>;
+	GLFWwindow* handle;
+	KeyCallback keyCallback;
+	~Window();
+	Window();
 
-	GLWindow(const std::string& title, uint32_t width, uint32_t height);
-	~GLWindow();
+	static void internalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+
+public:
+	static Window& getInstance();
 
 	uint32_t getWidth() const;
 	uint32_t getHeigth() const;
@@ -74,19 +73,9 @@ public:
 
 	static void hideConsole();
 	static void showConsole();
-	void setFullScreen();
-	void setHalfScreenWindowed();
+	void showWindow();
+	void hideWindow();
 
 	static bool requestFilePath(char*);
 
-private:
-	GLFWwindow* handle;
-	KeyCallback keyCallback;
-
-	struct {
-		double xPos;
-		double yPos;
-	} lastMouse;
-
-	static void internalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 };

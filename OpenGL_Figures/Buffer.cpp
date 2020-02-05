@@ -4,11 +4,6 @@ Buffer::Buffer(const std::vector<glm::vec2>& vertices)
 {
 	vertexCount = vertices.size();
 
-	if (vertices.size() <= 0 || vertices.size() % 3 != 0)
-	{
-		throw new std::invalid_argument("Vertices size % 3 must be equals 0!");
-	}
-
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);

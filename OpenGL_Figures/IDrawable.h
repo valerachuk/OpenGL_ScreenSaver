@@ -1,6 +1,6 @@
 #pragma once
-#include "GLRenderSystem.h"
+#include "RenderSystem.h"
 
 class IDrawable {
-	virtual void Draw(GLRenderSystem&) = 0;
+	virtual void draw() = 0;
 };
