@@ -23,12 +23,30 @@
     <ClCompile Include="Figure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLRenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Figure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLRenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,6 +8,14 @@ void Figure::clampPos()
 	}
 }
 
+glm::mat4 Figure::calcModelMatrix()
+{
+	glm::mat4 matrix(1.0f);
+	matrix = glm::scale(matrix, glm::vec3(getScale(), 1.0f));
+	matrix = glm::translate(matrix, glm::vec3(getPos(), 0.0f));
+	return matrix;
+}
+
 const glm::vec2& Figure::getScale() const
 {
 	return _scale;
@@ -38,14 +46,40 @@ void Figure::setColor(const glm::vec4& color)
 	_color = color;
 }
 
+bool Figure::getHilighted() const
+{
+	return _isHillighted;
+}
+
+void Figure::setHilighed(bool state)
+{
+	_isHillighted = state;
+}
+
+bool Figure::getDeformed() const
+{
+	return _isDeformed;
+}
+
+void Figure::setDeformed(bool state)
+{
+	if (state && !_isDeformed)
+		_scale *= DEFORM_FACTOR;
+	else if (!state && _isDeformed)
+		_scale /= DEFORM_FACTOR;
+
+	_isDeformed = state;
+}
+
 const Buffer& Figure::getBuffer() const
 {
 	return *_buffer;
 }
 
-void Figure::setBuffer(std::shared_ptr<Buffer> buffer)
+void Figure::translate(const glm::vec2& offset)
 {
-	_buffer = buffer;
+	_position += offset;
+	clampPos();
 }
 
 bool Figure::isOtherCollision(const Figure& other)
@@ -54,4 +88,14 @@ bool Figure::isOtherCollision(const Figure& other)
 			getPos().x - getScale().x / 2 <= other.getPos().x + other.getScale().x / 2) &&
 			(getPos().y + getScale().y / 2 >= other.getPos().y - other.getScale().y / 2 ||
 			getPos().y - getScale().y / 2 <= other.getPos().y + other.getScale().y / 2);
+}
+
+Figure::Figure(std::shared_ptr<Buffer> buffer) :
+	_scale(glm::vec2(1.0f)),
+	_position(glm::vec2(1.0f)),
+	_color(glm::vec4(0.0f)),
+	_isHillighted(false),
+	_isDeformed(false)
+{
+
 }
