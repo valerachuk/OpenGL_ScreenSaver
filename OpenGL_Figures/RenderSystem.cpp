@@ -36,8 +36,8 @@ void RenderSystem::render(GLuint VAO, size_t verticesCount)
 
 	_shader->UseProgram();
 	sendUniformsToShader();
-
-	glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glDrawArrays(GL_LINE_LOOP, 0, verticesCount);
 	glBindVertexArray(0);
 }
 
@@ -55,6 +55,6 @@ void RenderSystem::sendUniformsToShader()
 {
 	checkSahder();
 
-	_shader->setMat4Uniform("modelMatrix", _ShapeTransform);
-	_shader->setVec4Uniform("lightPos", _color);
+	_shader->setMat4Uniform("_modelMatrix", _ShapeTransform);
+	_shader->setVec4Uniform("_color", _color);
 }

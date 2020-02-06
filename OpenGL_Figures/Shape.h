@@ -7,9 +7,9 @@
 
 class Shape: public IDrawable {
 private:
-	const int DEFORM_FACTOR = 2;
-	const float START_OPACITY = 0.4;
-	const float K_OPACITY = 0.05;
+	const int DEFORM_FACTOR = 2.0f;
+	const float START_OPACITY = 0.4f;
+	const float K_OPACITY = 0.05f;
 
 	glm::vec2 _scale;
 	glm::vec2 _position;

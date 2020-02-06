@@ -14,9 +14,6 @@
     <ClCompile Include="OpenGL_Figures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Figures_data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Figures_data.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

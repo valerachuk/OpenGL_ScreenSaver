@@ -2,16 +2,16 @@
 
 void Shape::generateTrail()
 {
-	for (float opacity = START_OPACITY, int zIndex = -1; opacity > 0; opacity -= K_OPACITY, zIndex--)
+	/*for (float opacity = START_OPACITY, int zIndex = -1; opacity > 0; opacity -= K_OPACITY, zIndex--)
 	{
-		Shape shape(_buffer);
+		Shape shape = Shape(_buffer);
 		glm::vec4 newColor = _color;
 		newColor *= opacity;
 		shape.setColor(newColor);
 		shape.setPos(_position);
 		shape.setZIndex(zIndex);
 		_trail.push_back(shape);
-	}
+	}*/
 }
 
 void Shape::clampPos()
@@ -115,4 +115,5 @@ Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_isHillighted(false),
 	_isDeformed(false),
 	_zIndex(0),
-	_trail(std::vector<Shape>()) { }
+	_trail(std::vector<Shape>()),
+	_buffer(buffer) { }
