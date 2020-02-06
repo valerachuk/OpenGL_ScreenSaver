@@ -1,24 +1,33 @@
 #include "Shape.h"
 
+void Shape::generateTrail()
+{
+	for (float opacity = START_OPACITY, int zIndex = -1; opacity > 0; opacity -= K_OPACITY, zIndex--)
+	{
+		Shape shape(_buffer);
+		glm::vec4 newColor = _color;
+		newColor *= opacity;
+		shape.setColor(newColor);
+		shape.setPos(_position);
+		shape.setZIndex(zIndex);
+		_trail.push_back(shape);
+	}
+}
+
 void Shape::clampPos()
 {
-	if (getPos().x + getScale().x / 2 > 1)
+	if (_position.x + _scale.x / 2 > 1)
 	{
-		_position.x = 1.0f - getScale().x / 2;
+		_position.x = 1.0f - _scale.x / 2;
 	}
 }
 
 glm::mat4 Shape::calcShapeMatrix()
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::scale(matrix, glm::vec3(getScale(), 1.0f));
-	matrix = glm::translate(matrix, glm::vec3(getPos(), 0.0f));
+	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
+	matrix = glm::translate(matrix, glm::vec3(_position, _zIndex));
 	return matrix;
-}
-
-const glm::vec2& Shape::getScale() const
-{
-	return _scale;
 }
 
 void Shape::setScale(const glm::vec2& scale)
@@ -26,24 +35,27 @@ void Shape::setScale(const glm::vec2& scale)
 	_scale = scale;
 }
 
-const glm::vec2& Shape::getPos() const
-{
-	return _position;
-}
-
 void Shape::setPos(const glm::vec2& position)
 {
 	_position = position;
 }
 
-const glm::vec4& Shape::getColor() const
-{
-	return _color;
-}
-
 void Shape::setColor(const glm::vec4& color)
 {
 	_color = color;
+}
+
+void Shape::setTrail(bool state)
+{
+	if (state)
+		generateTrail();
+	else
+		_trail.clear();
+}
+
+void Shape::setZIndex(float value)
+{
+	_zIndex = value;
 }
 
 bool Shape::getHilighted() const
@@ -71,30 +83,29 @@ void Shape::setDeformed(bool state)
 	_isDeformed = state;
 }
 
-const Buffer& Shape::getBuffer() const
-{
-	return *_buffer;
-}
 
 void Shape::translate(const glm::vec2& offset)
 {
-	setPos(getPos() + offset);
+	setPos(_position + offset);
 	clampPos();
 }
 
 bool Shape::isOtherCollision(const Shape& other)
 {
-	return (getPos().x + getScale().x / 2 >= other.getPos().x - other.getScale().x / 2 ||
-			getPos().x - getScale().x / 2 <= other.getPos().x + other.getScale().x / 2) &&
-			(getPos().y + getScale().y / 2 >= other.getPos().y - other.getScale().y / 2 ||
-			getPos().y - getScale().y / 2 <= other.getPos().y + other.getScale().y / 2);
+	return (_position.x + _scale.x / 2 >= other._position.x - other._scale.x / 2 ||
+			_position.x - _scale.x / 2 <= other._position.x + other._scale.x / 2) &&
+			(_position.y + _scale.y / 2 >= other._position.y - other._scale.y / 2 ||
+			_position.y - _scale.y / 2 <= other._position.y + other._scale.y / 2);
 }
 
 void Shape::draw()
 {
+	for (auto item = _trail.begin(); item != _trail.end(); item++)
+		item->draw();
+
 	RenderSystem::getInstance().setShapeTransform(calcShapeMatrix());
-	RenderSystem::getInstance().setColor(getColor());
-	RenderSystem::getInstance().render(getBuffer().getVAO(), getBuffer().getVertexCount());
+	RenderSystem::getInstance().setColor(_color);
+	RenderSystem::getInstance().render(_buffer->getVAO(), _buffer->getVertexCount());
 }
 
 Shape::Shape(std::shared_ptr<Buffer> buffer) :
@@ -102,4 +113,6 @@ Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_position(glm::vec2(1.0f)),
 	_color(glm::vec4(0.0f)),
 	_isHillighted(false),
-	_isDeformed(false) { }
+	_isDeformed(false),
+	_zIndex(0),
+	_trail(std::vector<Shape>()) { }

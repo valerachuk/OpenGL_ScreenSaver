@@ -21,6 +21,8 @@ private:
 public:
 	static RenderSystem& getInstance();
 
+	void setShader(std::unique_ptr<Shader>);
+
 	static void clearDisplay(float red, float green, float blue);
 
 	void render(GLuint VAO, size_t verticesCount);

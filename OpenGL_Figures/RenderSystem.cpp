@@ -17,6 +17,11 @@ RenderSystem& RenderSystem::getInstance()
 	return inst;
 }
 
+void RenderSystem::setShader(std::unique_ptr<Shader> shader)
+{
+	_shader = std::move(shader);
+}
+
 void RenderSystem::clearDisplay(float red, float green, float blue)
 {
 	glClearColor(red, green, blue, 1.0f);
