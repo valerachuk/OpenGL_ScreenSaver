@@ -16,10 +16,14 @@ void Shape::generateTrail()
 
 void Shape::clampPos()
 {
-	if (_position.x + _scale.x / 2 > 1)
-	{
+	if (_position.x + _scale.x / 2 > 1) {
 		_position.x = 1.0f - _scale.x / 2;
 	}
+	else if (_position.x - _scale.x / 2 < -1) {
+		_position.x = -1.0f + _scale.x / 2;
+	}
+
+
 }
 
 glm::mat4 Shape::calcShapeMatrix()
@@ -86,8 +90,9 @@ void Shape::setDeformed(bool state)
 
 void Shape::translate(const glm::vec2& offset)
 {
-	setPos(_position + offset);
+	_position += offset;
 	clampPos();
+	std::cout << _position.x << " " << _position.y << std::endl;
 }
 
 bool Shape::isOtherCollision(const Shape& other)
@@ -100,8 +105,8 @@ bool Shape::isOtherCollision(const Shape& other)
 
 void Shape::draw()
 {
-	for (auto item = _trail.begin(); item != _trail.end(); item++)
-		item->draw();
+	/*for (auto item = _trail.begin(); item != _trail.end(); item++)
+		item->draw();*/
 
 	RenderSystem::getInstance().setShapeTransform(calcShapeMatrix());
 	RenderSystem::getInstance().setColor(_color);
@@ -110,7 +115,7 @@ void Shape::draw()
 
 Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_scale(glm::vec2(1.0f)),
-	_position(glm::vec2(1.0f)),
+	_position(glm::vec2(0.0f)),
 	_color(glm::vec4(0.0f)),
 	_isHillighted(false),
 	_isDeformed(false),

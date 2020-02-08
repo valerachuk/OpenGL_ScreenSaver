@@ -7,13 +7,15 @@
 #include "Buffer.h"
 #include "RenderSystem.h"
 #include "Window.h"
-#include "Figures_data.h"
+#include "ShapeData.h"
 
 
 class Program {
 private:
 	Program();
 	static void onKeyCallback(KeyCode, Action, Modifier);
+	glm::vec2 moveAxis;
+	float moveSpeed;
 
 public:
 	static Program& getInstance();

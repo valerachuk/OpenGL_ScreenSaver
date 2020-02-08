@@ -4,6 +4,7 @@
 #include <vector>
 #include "Buffer.h"
 #include "IDrawable.h"
+#include "iostream"
 
 class Shape: public IDrawable {
 private:
