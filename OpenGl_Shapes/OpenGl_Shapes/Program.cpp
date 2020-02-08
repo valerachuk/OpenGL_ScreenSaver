@@ -2,7 +2,7 @@
 
 Program::Program() : 
 	moveAxis(glm::vec2(0.0f)),
-	moveSpeed(0.04f)
+	moveSpeed(0.02f)
 {
 	glfwInit();
 	glewInit();
@@ -46,7 +46,9 @@ void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
 		}
 	}
 
-	//Program::getInstance().moveAxis = glm::normalize(axis);
+	if (glm::length(axis) > 0)
+		axis = glm::normalize(axis);
+
 }
 
 Program& Program::getInstance()
@@ -57,17 +59,26 @@ Program& Program::getInstance()
 
 void Program::Start()
 {
-	Shape shape = Shape(std::shared_ptr<Buffer>(new Buffer(ShapeData::getTriangle())));
-	//shape.setColor(glm::vec4(1.0f));
+	ShapeUnion shapeUnion;
+	Shape* shape1 = new Shape(std::shared_ptr<Buffer>(new Buffer(ShapeData::getTriangle())));
+	shape1->setColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	shape1->setScale(glm::vec2(0.5f));
+	shape1->setPos(glm::vec2(0.6f, 0.6f));
+	shapeUnion.Add(std::unique_ptr<ICanvasComponent>(shape1));
+
+	Shape* shape2 = new Shape(std::shared_ptr<Buffer>(new Buffer(ShapeData::getTriangle())));
+	shapeUnion.Add(std::unique_ptr<ICanvasComponent>(shape2));
+
 
 	glfwSwapInterval(1);
 	while (!glfwWindowShouldClose(Window::getInstance().getGLFWHandle()))
 	{
-		glfwWaitEvents();
+		glfwPollEvents();
 
 		RenderSystem::clearDisplay(1, 1, 1);
-		shape.draw();
-		shape.translate(moveAxis * moveSpeed);
+		shapeUnion.draw();
+		shapeUnion.translate(moveAxis * moveSpeed);
+		shapeUnion.clampCanvasFit();
 
 		glfwSwapBuffers(Window::getInstance().getGLFWHandle());
 	}

@@ -2,13 +2,15 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>
+#include <functional>
 #include "Buffer.h"
-#include "IDrawable.h"
-#include "iostream"
+#include "Interfaces.h"
+#include "BoundingBox.h"
+#include "RenderSystem.h"
 
-class Shape: public IDrawable {
+class Shape: public ICanvasComponent {
 private:
-	const int DEFORM_FACTOR = 2.0f;
+	const float DEFORM_FACTOR = 2.0f;
 	const float START_OPACITY = 0.4f;
 	const float K_OPACITY = 0.05f;
 
@@ -22,7 +24,7 @@ private:
 	std::vector<Shape> _trail;
 
 	void generateTrail();
-	void clampPos();
+	BoundingBox calcBoundingBox() const override;
 	glm::mat4 calcShapeMatrix();
 
 
@@ -40,6 +42,8 @@ public:
 	void setDeformed(bool);
 
 	void translate(const glm::vec2&);
+	void clampCanvasFit();
+
 	bool isOtherCollision(const Shape&);
 	void draw() override;
 

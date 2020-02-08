@@ -14,23 +14,34 @@ void Shape::generateTrail()
 	}*/
 }
 
-void Shape::clampPos()
+void Shape::clampCanvasFit()
 {
-	if (_position.x + _scale.x / 2 > 1) {
-		_position.x = 1.0f - _scale.x / 2;
-	}
-	else if (_position.x - _scale.x / 2 < -1) {
-		_position.x = -1.0f + _scale.x / 2;
-	}
+	std::function<float(float, float)> cutOver = [](float value, float max) {return value > max ? max - value : 0; };
+	std::function<float(float, float)> cutUnder = [](float value, float min) {return value < min ? min - value : 0; };
+	
+	glm::vec2 clampVector = glm::vec2(0.0f);
+	
+	const BoundingBox& boundingBox = calcBoundingBox();
 
+	clampVector.x = cutOver(boundingBox._right, 1.0f);
+	clampVector.x = clampVector.x == 0 ? cutUnder(boundingBox._left, -1.0f) : clampVector.x;
 
+	clampVector.y = cutOver(boundingBox._top, 1.0f);
+	clampVector.y = clampVector.y == 0 ? cutUnder(boundingBox._bottom, -1.0f) : clampVector.y;
+
+	translate(clampVector);
+}
+
+BoundingBox Shape::calcBoundingBox() const
+{
+	return BoundingBox(_position.y + _scale.y / 2, _position.y - _scale.y / 2, _position.x - _scale.x / 2, _position.x + _scale.x / 2);
 }
 
 glm::mat4 Shape::calcShapeMatrix()
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
 	matrix = glm::translate(matrix, glm::vec3(_position, _zIndex));
+	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
 	return matrix;
 }
 
@@ -91,8 +102,6 @@ void Shape::setDeformed(bool state)
 void Shape::translate(const glm::vec2& offset)
 {
 	_position += offset;
-	clampPos();
-	std::cout << _position.x << " " << _position.y << std::endl;
 }
 
 bool Shape::isOtherCollision(const Shape& other)

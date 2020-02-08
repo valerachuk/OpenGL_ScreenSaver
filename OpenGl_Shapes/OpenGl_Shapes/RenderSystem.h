@@ -16,7 +16,7 @@ private:
 
 	void sendUniformsToShader();
 	RenderSystem();
-	void checkSahder() const;
+	void checkShader() const;
 
 public:
 	static RenderSystem& getInstance();

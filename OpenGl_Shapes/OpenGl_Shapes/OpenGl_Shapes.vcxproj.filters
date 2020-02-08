@@ -13,53 +13,74 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{2c2729b5-ace6-4bb3-910f-005080e19c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shape">
+      <UniqueIdentifier>{71bb9b6a-2381-4c09-a1d7-981105a9ba53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{df25484c-05d7-40ec-9db8-34091e5cfac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shape">
+      <UniqueIdentifier>{6b2f99cc-3d59-4952-ab82-a451f4f29ef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IDrawable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShapeData.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Header Files\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeUnion.h">
+      <Filter>Header Files\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces.h">
+      <Filter>Header Files\Shape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source Files\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.h">
+      <Filter>Header Files\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeUnion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

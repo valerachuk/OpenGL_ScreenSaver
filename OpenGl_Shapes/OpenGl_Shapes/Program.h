@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include <memory>
 #include "Shape.h"
+#include "ShapeUnion.h"
 #include "Buffer.h"
 #include "RenderSystem.h"
 #include "Window.h"
