@@ -10,6 +10,21 @@ void ShapeUnion::Add(std::unique_ptr<ICanvasComponent> iShapePtr)
 	children.push_back(std::move(iShapePtr));
 }
 
+Selectable* ShapeUnion::getById(int id)
+{
+	if (Selectable::getById(id))
+		return this;
+
+	for (size_t i = 0; i < children.size(); i++)
+	{
+		Selectable* selectable = children[i]->getById(id);
+		if (selectable)
+			return selectable;
+	}
+
+	return nullptr;
+}
+
 void ShapeUnion::draw()
 {
 	forEach([](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->draw();});

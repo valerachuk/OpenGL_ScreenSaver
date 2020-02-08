@@ -64,10 +64,15 @@ void Program::Start()
 	shape1->setColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	shape1->setScale(glm::vec2(0.5f));
 	shape1->setPos(glm::vec2(0.6f, 0.6f));
+	shape1->setId(1);
 	shapeUnion.Add(std::unique_ptr<ICanvasComponent>(shape1));
 
 	Shape* shape2 = new Shape(std::shared_ptr<Buffer>(new Buffer(ShapeData::getTriangle())));
+	shape2->setId(2);
 	shapeUnion.Add(std::unique_ptr<ICanvasComponent>(shape2));
+	shapeUnion.setId(3);
+
+	auto ptr = dynamic_cast<ICanvasComponent*>(shapeUnion.getById(11));
 
 
 	glfwSwapInterval(1);

@@ -41,7 +41,7 @@ public:
 	bool getDeformed() const;
 	void setDeformed(bool);
 
-	void translate(const glm::vec2&);
+	void translate(const glm::vec2&) override;
 	void clampCanvasFit();
 
 	bool isOtherCollision(const Shape&);

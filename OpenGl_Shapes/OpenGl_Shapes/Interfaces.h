@@ -15,11 +15,16 @@ public:
 	virtual void clampCanvasFit() = 0;
 };
 
-class INameable {
+class Selectable { //
+	int _id;
 public:
-	//virtual const std::string& getName() const = 0;
-	//virtual void setName(const std::string&) = 0;
+	virtual Selectable* getById(int id) {
+		return id == _id ? this : nullptr;
+	}
+	void setId(int id) {
+		_id = id;
+	}
 };
 
-class ICanvasComponent : public IDrawable, public IRigidBody, public INameable { };
+class ICanvasComponent : public IDrawable, public IRigidBody, public Selectable { };
 
