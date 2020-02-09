@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Interfaces.h" />
-    <ClInclude Include="ShapeData.h" />
+    <ClInclude Include="BufferCollection.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Shader.h" />
@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClCompile Include="BoundingBox.h" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="BufferCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderSystem.cpp" />

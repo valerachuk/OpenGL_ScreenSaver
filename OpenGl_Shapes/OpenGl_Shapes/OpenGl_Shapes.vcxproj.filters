@@ -30,9 +30,6 @@
     <ClInclude Include="Program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeData.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -53,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="Interfaces.h">
       <Filter>Header Files\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferCollection.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +81,10 @@
       <Filter>Header Files\Shape</Filter>
     </ClCompile>
     <ClCompile Include="ShapeUnion.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferCollection.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

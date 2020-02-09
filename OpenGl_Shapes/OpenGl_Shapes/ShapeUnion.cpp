@@ -2,22 +2,22 @@
 
 void ShapeUnion::forEach(std::function<void(std::unique_ptr<ICanvasComponent>&)> func)
 {
-	const auto _ = std::for_each(children.begin(), children.end(), func);
+	const auto _ = std::for_each(_children.begin(), _children.end(), func);
 }
 
-void ShapeUnion::Add(std::unique_ptr<ICanvasComponent> iShapePtr)
+void ShapeUnion::Add(std::unique_ptr<ICanvasComponent>& iShapePtr)
 {
-	children.push_back(std::move(iShapePtr));
+	_children.push_back(std::move(iShapePtr));
 }
 
 Selectable* ShapeUnion::getById(int id)
 {
-	if (Selectable::getById(id))
+	if (_id == id)
 		return this;
 
-	for (size_t i = 0; i < children.size(); i++)
+	for (size_t i = 0; i < _children.size(); i++)
 	{
-		Selectable* selectable = children[i]->getById(id);
+		Selectable* selectable = _children[i]->getById(id);
 		if (selectable)
 			return selectable;
 	}
@@ -38,22 +38,28 @@ void ShapeUnion::translate(const glm::vec2& offset)
 BoundingBox ShapeUnion::calcBoundingBox() const
 {
 	uint8_t currentField = 0;
-	auto smartComparer = [&currentField](const std::unique_ptr<ICanvasComponent>& a, const std::unique_ptr<ICanvasComponent>& b) 
+	auto smartComparer = [currentField](const std::unique_ptr<ICanvasComponent>& a, const std::unique_ptr<ICanvasComponent>& b) 
 	{
 		BoundingBox boxA = a->calcBoundingBox();
 		float& fieldA = *(&boxA._top + currentField);
 
 		BoundingBox boxB = b->calcBoundingBox();
-		float& fieldB = *(&boxB._top + currentField++);
+		float& fieldB = *(&boxB._top + currentField);
 
 		return fieldA < fieldB;
 	};
 
 	BoundingBox bb;
-	bb._top = (*(std::max_element(children.begin(), children.end(), smartComparer)))->calcBoundingBox()._top;
-	bb._bottom = (*(std::min_element(children.begin(), children.end(), smartComparer)))->calcBoundingBox()._bottom;
-	bb._left = (*(std::min_element(children.begin(), children.end(), smartComparer)))->calcBoundingBox()._left;
-	bb._right = (*(std::max_element(children.begin(), children.end(), smartComparer)))->calcBoundingBox()._right;
+	bb._top = (*(std::max_element(_children.begin(), _children.end(), smartComparer)))->calcBoundingBox()._top;
+	
+	currentField++;
+	bb._bottom = (*(std::min_element(_children.begin(), _children.end(), smartComparer)))->calcBoundingBox()._bottom;
+	
+	currentField++;
+	bb._left = (*(std::min_element(_children.begin(), _children.end(), smartComparer)))->calcBoundingBox()._left;
+	
+	currentField++;
+	bb._right = (*(std::max_element(_children.begin(), _children.end(), smartComparer)))->calcBoundingBox()._right;
 
 	return bb;
 }
@@ -74,4 +80,12 @@ void ShapeUnion::clampCanvasFit()
 	clampVector.y = clampVector.y == 0 ? cutUnder(boundingBox._bottom, -1.0f) : clampVector.y;
 
 	translate(clampVector);
+}
+
+void ShapeUnion::print(std::ostream& stream, std::string indent) const
+{
+	stream << indent << _id << ") Type:Union" << std::endl;
+	std::for_each(_children.begin(), _children.end(), [&](const std::unique_ptr<ICanvasComponent>& item) {
+		item->print(stream, indent + "\t");
+	});
 }

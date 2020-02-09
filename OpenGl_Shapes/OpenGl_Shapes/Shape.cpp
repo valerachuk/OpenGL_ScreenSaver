@@ -40,7 +40,7 @@ BoundingBox Shape::calcBoundingBox() const
 glm::mat4 Shape::calcShapeMatrix()
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::translate(matrix, glm::vec3(_position, _zIndex));
+	matrix = glm::translate(matrix, glm::vec3(_position, 0.0f));
 	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
 	return matrix;
 }
@@ -66,11 +66,6 @@ void Shape::setTrail(bool state)
 		generateTrail();
 	else
 		_trail.clear();
-}
-
-void Shape::setZIndex(float value)
-{
-	_zIndex = value;
 }
 
 bool Shape::getHilighted() const
@@ -122,12 +117,17 @@ void Shape::draw()
 	RenderSystem::getInstance().render(_buffer->getVAO(), _buffer->getVertexCount());
 }
 
+void Shape::print(std::ostream& stream, std::string indent) const
+{
+	stream << indent << _id << ") Type:Shape, Color: (" << _color.r << ", "
+		<< _color.g << ", " << _color.b << ")" << std::endl;
+}
+
 Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_scale(glm::vec2(1.0f)),
 	_position(glm::vec2(0.0f)),
 	_color(glm::vec4(0.0f)),
 	_isHillighted(false),
 	_isDeformed(false),
-	_zIndex(0),
 	_trail(std::vector<Shape>()),
 	_buffer(buffer) { }

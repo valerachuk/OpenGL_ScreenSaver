@@ -2,21 +2,32 @@
 #define GLEW_STATIC
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 #include <memory>
+#include <functional>
+#include <iostream>
+#include <string>
 #include "Shape.h"
 #include "ShapeUnion.h"
 #include "Buffer.h"
 #include "RenderSystem.h"
 #include "Window.h"
-#include "ShapeData.h"
-
+#include "BufferCollection.h"
+#include "Interfaces.h"
 
 class Program {
 private:
 	Program();
 	static void onKeyCallback(KeyCode, Action, Modifier);
-	glm::vec2 moveAxis;
-	float moveSpeed;
+	void menu();
+
+	Program& operator=(const Program&) = delete;
+	Program(const Program&) = delete;
+
+	glm::vec2 _moveAxis;
+	float _moveSpeed;
+	ICanvasComponent* _currentSelection;
+	ShapeUnion _anchor;
 
 public:
 	static Program& getInstance();

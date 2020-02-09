@@ -16,6 +16,10 @@ private:
 
 	void sendUniformsToShader();
 	RenderSystem();
+
+	RenderSystem& operator=(const RenderSystem&) = delete;
+	RenderSystem(const RenderSystem&) = delete;
+
 	void checkShader() const;
 
 public:

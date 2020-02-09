@@ -17,7 +17,6 @@ private:
 	glm::vec2 _scale;
 	glm::vec2 _position;
 	glm::vec4 _color;
-	float _zIndex;
 	bool _isHillighted;
 	bool _isDeformed;
 	std::shared_ptr<Buffer> _buffer;
@@ -33,7 +32,6 @@ public:
 	void setPos(const glm::vec2&);
 	void setColor(const glm::vec4&);
 	void setTrail(bool);
-	void setZIndex(float);
 
 	bool getHilighted() const;
 	void setHilighed(bool);
@@ -46,6 +44,8 @@ public:
 
 	bool isOtherCollision(const Shape&);
 	void draw() override;
+
+	void print(std::ostream& stream, std::string indent = "") const override;
 
 	Shape(std::shared_ptr<Buffer>);
 

@@ -57,8 +57,12 @@ private:
 	using KeyCallback = std::function<void(KeyCode, Action, Modifier)>;
 	GLFWwindow* handle;
 	KeyCallback keyCallback;
-	~Window();
+	
 	Window();
+	~Window();
+
+	Window& operator=(const Window&) = delete;
+	Window(const Window&) = delete;
 
 	static void internalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 

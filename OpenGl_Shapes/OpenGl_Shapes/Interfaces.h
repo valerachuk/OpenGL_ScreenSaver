@@ -2,6 +2,7 @@
 #include "BoundingBox.h"
 #include "glm/glm.hpp"
 #include <string>
+#include <iostream>
 
 class IDrawable {
 public:
@@ -15,7 +16,13 @@ public:
 	virtual void clampCanvasFit() = 0;
 };
 
+class IPrintable {
+public:
+	virtual void print(std::ostream& stream, std::string indent) const = 0;
+};
+
 class Selectable { //
+protected:
 	int _id;
 public:
 	virtual Selectable* getById(int id) {
@@ -26,5 +33,5 @@ public:
 	}
 };
 
-class ICanvasComponent : public IDrawable, public IRigidBody, public Selectable { };
+class ICanvasComponent : public IDrawable, public IRigidBody, public IPrintable, public Selectable { };
 

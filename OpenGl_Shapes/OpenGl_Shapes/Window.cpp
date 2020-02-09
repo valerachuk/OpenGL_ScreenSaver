@@ -80,6 +80,16 @@ void Window::showConsole()
 	::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 }
 
+void Window::showWindow()
+{
+	glfwShowWindow(handle);
+}
+
+void Window::hideWindow()
+{
+	glfwHideWindow(handle);
+}
+
 bool Window::requestFilePath(char* path)
 {
 	OPENFILENAMEA ofn;
