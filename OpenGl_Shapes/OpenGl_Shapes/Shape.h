@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>
+#include <deque>
+#include <string>
 #include <functional>
 #include "Buffer.h"
 #include "Interfaces.h"
@@ -11,33 +13,33 @@
 class Shape: public ICanvasComponent {
 private:
 	const float DEFORM_FACTOR = 2.0f;
-	const float START_OPACITY = 0.4f;
-	const float K_OPACITY = 0.05f;
+	const float START_OPACITY = 0.1f;
+	const float K_OPACITY = 0.005f;
 
 	glm::vec2 _scale;
 	glm::vec2 _position;
 	glm::vec4 _color;
 	bool _isHillighted;
+	bool _isHidden;
 	bool _isDeformed;
+	bool _hasTrail;
 	std::shared_ptr<Buffer> _buffer;
-	std::vector<Shape> _trail;
+	std::deque<glm::vec2> _trail;
 
-	void generateTrail();
 	BoundingBox calcBoundingBox() const override;
 	glm::mat4 calcShapeMatrix();
-
+	glm::mat4 calcShapeMatrix(const glm::vec2&, float zIndex);
+	void fillTrail();
+	void drawTrail();
 
 public:
-	void setScale(const glm::vec2&);
-	void setPos(const glm::vec2&);
-	void setColor(const glm::vec4&);
-	void setTrail(bool);
+	void setScale(const glm::vec2&) override;
+	void setColor(const glm::vec4&) override;
+	void setTrail(bool) override;
+	void setDeformed(bool) override;
+	void setHidden(bool) override;
 
-	bool getHilighted() const;
 	void setHilighed(bool);
-
-	bool getDeformed() const;
-	void setDeformed(bool);
 
 	void translate(const glm::vec2&) override;
 	void clampCanvasFit();

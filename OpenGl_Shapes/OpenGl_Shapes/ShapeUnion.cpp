@@ -10,14 +10,14 @@ void ShapeUnion::Add(std::unique_ptr<ICanvasComponent>& iShapePtr)
 	_children.push_back(std::move(iShapePtr));
 }
 
-Selectable* ShapeUnion::getById(int id)
+ISelectable* ShapeUnion::getById(int id)
 {
 	if (_id == id)
 		return this;
 
 	for (size_t i = 0; i < _children.size(); i++)
 	{
-		Selectable* selectable = _children[i]->getById(id);
+		ISelectable* selectable = _children[i]->getById(id);
 		if (selectable)
 			return selectable;
 	}
@@ -28,6 +28,31 @@ Selectable* ShapeUnion::getById(int id)
 void ShapeUnion::draw()
 {
 	forEach([](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->draw();});
+}
+
+void ShapeUnion::setColor(const glm::vec4& color)
+{
+	forEach([&color](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setColor(color);});
+}
+
+void ShapeUnion::setTrail(bool state)
+{
+	forEach([&state](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setTrail(state);});
+}
+
+void ShapeUnion::setDeformed(bool state)
+{
+	forEach([&state](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setDeformed(state);});
+}
+
+void ShapeUnion::setScale(const glm::vec2& scale)
+{
+	forEach([&scale](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setScale(scale);});
+}
+
+void ShapeUnion::setHidden(bool state)
+{
+	forEach([&state](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setHidden(state); });
 }
 
 void ShapeUnion::translate(const glm::vec2& offset)

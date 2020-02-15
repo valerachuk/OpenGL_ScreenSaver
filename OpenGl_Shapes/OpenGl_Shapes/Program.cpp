@@ -7,8 +7,12 @@ Program::Program() :
 {
 	glfwInit();
 	glewInit();
+
 	Window::getInstance().setKeyCallback(onKeyCallback); //first
 	RenderSystem::getInstance().setShader(std::unique_ptr<Shader>(new Shader("../../shader/vertexShader.glsl", "../../shader/fragmentShader.glsl")));
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
@@ -59,18 +63,19 @@ void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
 
 void Program::menu()
 {
-	std::function<void(Shape*)> changeProps = [](Shape* shape) {
-		std::cout << "Enter new color <R, G, B> (0.0f - 1.0f), or type -1 to skip: ";
+	std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
+		std::cout << "Enter color <R, G, B, A> (0.0f - 1.0f), or type -1 to skip: ";
 		glm::vec4 newColor(1.0f);
 		std::cin >> newColor.r;
 		if (newColor.r != -1)
 		{
 			std::cin >> newColor.g;
 			std::cin >> newColor.b;
+			std::cin >> newColor.a;
 			shape->setColor(newColor);
 		}
 
-		std::cout << "Enter new scale <X, Y> (0.0f - 1.0f), or type -1 to skip: ";
+		std::cout << "Enter scale <X, Y> (0.0f - 1.0f), or type -1 to skip: ";
 		glm::vec2 newScale(1.0f);
 		std::cin >> newScale.x;
 		if (newScale.r != -1)
@@ -78,6 +83,28 @@ void Program::menu()
 			std::cin >> newScale.y;
 			glm::clamp(newScale, glm::vec2(0.0f), glm::vec2(1.0f));
 			shape->setScale(newScale);
+		}
+
+		std::cout << "Enter hidden state (0, 1), or -1 to skip: ";
+		int state;
+		std::cin >> state;
+		if (state == 1 || state == 0)
+		{
+			shape->setHidden(state);
+		}
+
+		std::cout << "Enter deformed state (0, 1), or -1 to skip: ";
+		std::cin >> state;
+		if (state == 1 || state == 0)
+		{
+			shape->setDeformed(state);
+		}
+
+		std::cout << "Enter trail state (0, 1), or -1 to skip: ";
+		std::cin >> state;
+		if (state == 1 || state == 0)
+		{
+			shape->setTrail(state);
 		}
 
 	};
@@ -160,10 +187,10 @@ void Program::menu()
 				continue;
 			}
 
-			Shape* newShape = new Shape(buffer);
+			ICanvasComponent* newShape = new Shape(buffer);
 			newShape->setId(Id);
 			changeProps(newShape);
-			auto toAdd = std::unique_ptr<ICanvasComponent>((ICanvasComponent*)newShape);
+			auto toAdd = std::unique_ptr<ICanvasComponent>(newShape);
 			parent->Add(toAdd);
 		}
 
@@ -182,6 +209,8 @@ Program& Program::getInstance()
 
 void Program::Start()
 {
+	menu();
+
 	glfwSwapInterval(1);
 	while (!glfwWindowShouldClose(Window::getInstance().getGLFWHandle()))
 	{
