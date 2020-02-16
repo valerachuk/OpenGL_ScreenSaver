@@ -168,29 +168,37 @@ void Program::menu()
 			}
 
 			std::string type;
-			std::cout << "Enter type: <union/square/triangle>: ";
+			std::cout << "Enter type: <union/square/triangle/star/octagon>: ";
 			std::cin >> type;
 
+			ICanvasComponent* newElem;
+
 			if (type == "union") {
-				std::unique_ptr<ICanvasComponent> newUnion = std::make_unique<ShapeUnion>();
-				newUnion->setId(Id);
-				parent->Add(newUnion);
-				std::cout << "new Union added!" << std::endl;
-				continue;
+				newElem = new ShapeUnion();
 			}
-
-			std::shared_ptr<Buffer> buffer = BufferCollection::getBuffer(type);
-
-			if (!buffer)
-			{
+			else if (type == "square") {
+				newElem = new Shape(ShapeFactory::getShape(ShapeType::Square));
+			}
+			else if (type == "triangle") {
+				newElem = new Shape(ShapeFactory::getShape(ShapeType::Triangle));
+			}
+			else if (type == "star") {
+				newElem = new Shape(ShapeFactory::getShape(ShapeType::Star));
+			}
+			else if (type == "octagon") {
+				newElem = new Shape(ShapeFactory::getShape(ShapeType::Octagon));
+			}
+			else {
 				std::cout << "ERROR: Invalid type!" << std::endl;
 				continue;
 			}
 
-			ICanvasComponent* newShape = new Shape(buffer);
-			newShape->setId(Id);
-			changeProps(newShape);
-			auto toAdd = std::unique_ptr<ICanvasComponent>(newShape);
+			newElem->setId(Id);
+			
+			if (type != "union")
+				changeProps(newElem);
+
+			auto toAdd = std::unique_ptr<ICanvasComponent>(newElem);
 			parent->Add(toAdd);
 		}
 

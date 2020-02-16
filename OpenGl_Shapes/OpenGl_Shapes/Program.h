@@ -12,7 +12,7 @@
 #include "Buffer.h"
 #include "RenderSystem.h"
 #include "Window.h"
-#include "BufferCollection.h"
+#include "ShapeFactory.h"
 #include "Interfaces.h"
 
 class Program {

@@ -51,7 +51,7 @@
     <ClInclude Include="Interfaces.h">
       <Filter>Header Files\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="BufferCollection.h">
+    <ClInclude Include="ShapeFactory.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClCompile Include="ShapeUnion.cpp">
       <Filter>Source Files\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="BufferCollection.cpp">
+    <ClCompile Include="ShapeFactory.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
