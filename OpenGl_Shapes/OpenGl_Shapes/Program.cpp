@@ -138,8 +138,8 @@ void Program::menu()
 			int Id;
 			std::cout << "Enter item's id: ";
 			std::cin >> Id;
-			Shape* shape;
-			if (!(shape = dynamic_cast<Shape*>(_anchor.getById(Id))))
+			ICanvasComponent* shape;
+			if (!(shape = dynamic_cast<ICanvasComponent*>(_anchor.getById(Id))))
 			{
 				std::cout << "ERROR: Invalid id!" << std::endl;
 				continue;

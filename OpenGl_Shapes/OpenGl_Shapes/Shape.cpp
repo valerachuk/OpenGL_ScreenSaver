@@ -23,18 +23,18 @@ BoundingBox Shape::calcBoundingBox() const
 	return BoundingBox(_position.y + _scale.y / 2, _position.y - _scale.y / 2, _position.x - _scale.x / 2, _position.x + _scale.x / 2);
 }
 
-glm::mat4 Shape::calcShapeMatrix()
+glm::mat4 Shape::calcShapeMatrix(const glm::vec2& pos)
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::translate(matrix, glm::vec3(_position, 0.0f));
+	matrix = glm::translate(matrix, glm::vec3(pos, 0.0f));
 	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
 	return matrix;
 }
 
-glm::mat4 Shape::calcShapeMatrix(const glm::vec2& pos, float zIndex)
+glm::mat4 Shape::calcShapeMatrix()
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::translate(matrix, glm::vec3(pos, zIndex));
+	matrix = glm::translate(matrix, glm::vec3(_position, 0.0f));
 	matrix = glm::scale(matrix, glm::vec3(_scale, 1.0f));
 	return matrix;
 }
@@ -55,7 +55,7 @@ void Shape::drawTrail()
 {
 	float opacity = START_OPACITY;
 	for (std::deque<glm::vec2>::iterator iter = _trail.begin(); iter != _trail.end() && opacity > 0; iter++, opacity -= K_OPACITY) {
-		RenderSystem::getInstance().setShapeTransform(calcShapeMatrix(*iter, -1));
+		RenderSystem::getInstance().setShapeTransform(calcShapeMatrix(*iter));
 		glm::vec4 newColor = _color;
 		newColor.a *= opacity;
 		RenderSystem::getInstance().setColor(newColor);
@@ -77,18 +77,16 @@ void Shape::setTrail(bool state)
 {
 	_hasTrail = state;
 
-	if (_hasTrail)
+	if (!_hasTrail)
 	{
 		_trail.clear();
 	}
 }
 
-
 void Shape::setHilighed(bool state)
 {
 	_isHillighted = state;
 }
-
 
 void Shape::setDeformed(bool state)
 {
@@ -123,9 +121,7 @@ bool Shape::isOtherCollision(const Shape& other)
 void Shape::draw()
 {
 	if (_isHidden)
-	{
 		return;
-	}
 
 	drawTrail();
 

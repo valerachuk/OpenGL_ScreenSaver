@@ -62,14 +62,14 @@ void ShapeUnion::translate(const glm::vec2& offset)
 
 BoundingBox ShapeUnion::calcBoundingBox() const
 {
-	uint8_t currentField = 0;
-	auto smartComparer = [currentField](const std::unique_ptr<ICanvasComponent>& a, const std::unique_ptr<ICanvasComponent>& b) 
+	int currentField = 0;
+	auto smartComparer = [&currentField](const std::unique_ptr<ICanvasComponent>& a, const std::unique_ptr<ICanvasComponent>& b) 
 	{
 		BoundingBox boxA = a->calcBoundingBox();
-		float& fieldA = *(&boxA._top + currentField);
+		float fieldA = *(&boxA._top + currentField);
 
 		BoundingBox boxB = b->calcBoundingBox();
-		float& fieldB = *(&boxB._top + currentField);
+		float fieldB = *(&boxB._top + currentField);
 
 		return fieldA < fieldB;
 	};

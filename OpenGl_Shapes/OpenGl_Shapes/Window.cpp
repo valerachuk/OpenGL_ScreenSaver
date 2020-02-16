@@ -24,6 +24,7 @@ Window::Window() :
 
 	glfwSetWindowUserPointer(handle, this);
 	glfwSetKeyCallback(handle, internalKeyCallback);
+
 }
 
 Window::~Window()

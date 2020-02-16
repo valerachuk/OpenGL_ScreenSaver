@@ -25,7 +25,7 @@ void RenderSystem::setShader(std::unique_ptr<Shader> shader)
 void RenderSystem::clearDisplay(float red, float green, float blue)
 {
 	glClearColor(red, green, blue, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void RenderSystem::render(GLuint VAO, size_t verticesCount)

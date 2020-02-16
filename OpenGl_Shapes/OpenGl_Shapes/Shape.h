@@ -27,8 +27,8 @@ private:
 	std::deque<glm::vec2> _trail;
 
 	BoundingBox calcBoundingBox() const override;
+	glm::mat4 calcShapeMatrix(const glm::vec2&);
 	glm::mat4 calcShapeMatrix();
-	glm::mat4 calcShapeMatrix(const glm::vec2&, float zIndex);
 	void fillTrail();
 	void drawTrail();
 
