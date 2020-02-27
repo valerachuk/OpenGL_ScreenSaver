@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{2c2729b5-ace6-4bb3-910f-005080e19c20}</UniqueIdentifier>
     </Filter>
@@ -24,6 +20,12 @@
     </Filter>
     <Filter Include="Source Files\Shape">
       <UniqueIdentifier>{6b2f99cc-3d59-4952-ab82-a451f4f29ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{80406a17-658f-4ad7-b8d9-d9832a7b8194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{c6aa11cf-aa3e-41e5-adbc-6b19d025bfc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +54,10 @@
       <Filter>Header Files\Shape</Filter>
     </ClInclude>
     <ClInclude Include="ShapeFactory.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +89,10 @@
       <Filter>Source Files\Shape</Filter>
     </ClCompile>
     <ClCompile Include="ShapeFactory.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Memento.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@ public:
 	virtual void translate(const glm::vec2&) = 0;
 	virtual void clampCanvasFit() = 0;
 	virtual void setScale(const glm::vec2&) = 0;
+	virtual void setPos(const glm::vec2&) = 0;
 };
 
 class IPrintable {

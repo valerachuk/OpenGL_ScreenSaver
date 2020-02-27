@@ -78,11 +78,19 @@ void Program::menu()
 		std::cout << "Enter scale <X, Y> (0.0f - 1.0f), or type -1 to skip: ";
 		glm::vec2 newScale(1.0f);
 		std::cin >> newScale.x;
-		if (newScale.r != -1)
+		if (newScale.x != -1)
 		{
 			std::cin >> newScale.y;
 			glm::clamp(newScale, glm::vec2(0.0f), glm::vec2(1.0f));
 			shape->setScale(newScale);
+		}
+
+		std::cout << "Enter position <X, Y>, or type -1 to skip: ";
+		glm::vec2 newPos(1.0f);
+		if (newPos.x != -1)
+		{
+			std::cin >> newPos.y;
+			shape->setPos(newPos);
 		}
 
 		std::cout << "Enter hidden state (0, 1), or -1 to skip: ";

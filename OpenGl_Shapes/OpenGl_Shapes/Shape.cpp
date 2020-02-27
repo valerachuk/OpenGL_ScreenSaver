@@ -68,6 +68,11 @@ void Shape::setScale(const glm::vec2& scale)
 	_scale = scale;
 }
 
+void Shape::setPos(const glm::vec2& pos)
+{
+	_position = pos;
+}
+
 void Shape::setColor(const glm::vec4& color)
 {
 	_color = color;

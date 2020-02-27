@@ -34,6 +34,7 @@ private:
 
 public:
 	void setScale(const glm::vec2&) override;
+	void setPos(const glm::vec2&) override;
 	void setColor(const glm::vec4&) override;
 	void setTrail(bool) override;
 	void setDeformed(bool) override;
