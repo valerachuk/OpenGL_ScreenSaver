@@ -1,0 +1,2 @@
+ id 0 type union 
+ parent 0 id 1 type star scale 0.3 0.3 pos 0 0 color 0 1 1 1 isDeformed 0 isHidden 0 hasTrail 1

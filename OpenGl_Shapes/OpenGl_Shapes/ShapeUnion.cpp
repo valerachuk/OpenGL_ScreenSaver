@@ -35,6 +35,11 @@ void ShapeUnion::setColor(const glm::vec4& color)
 	forEach([&color](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setColor(color);});
 }
 
+void ShapeUnion::setPos(const glm::vec2& pos)
+{
+	forEach([&pos](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setPos(pos); });
+}
+
 void ShapeUnion::setTrail(bool state)
 {
 	forEach([&state](std::unique_ptr<ICanvasComponent>& iShapePtr) {iShapePtr->setTrail(state);});

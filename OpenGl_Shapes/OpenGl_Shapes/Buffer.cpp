@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-Buffer::Buffer(const std::vector<glm::vec2>& vertices)
+Buffer::Buffer(const std::vector<glm::vec2>& vertices, const std::string& name) : _shapeName(name)
 {
 	vertexCount = vertices.size();
 
@@ -31,4 +31,9 @@ const GLuint& Buffer::getVAO() const
 const GLuint& Buffer::getVertexCount() const
 {
 	return vertexCount;
+}
+
+const std::string& Buffer::getName() const
+{
+	return _shapeName;
 }

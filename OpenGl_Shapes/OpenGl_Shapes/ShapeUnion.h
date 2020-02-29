@@ -5,12 +5,15 @@
 #include <functional>
 #include "Interfaces.h"
 #include "BoundingBox.h"
+#include "Memento.h"
 
 class ShapeUnion : public ICanvasComponent {
 private:
 	std::vector<std::unique_ptr<ICanvasComponent>> _children;
 	void forEach(std::function<void(std::unique_ptr<ICanvasComponent>&)>);
 	BoundingBox calcBoundingBox() const override;
+
+	friend class Memento;
 
 public:
 	void Add(std::unique_ptr<ICanvasComponent>&);
@@ -20,6 +23,7 @@ public:
 	void draw() override;
 
 	void setColor(const glm::vec4&) override;
+	void setPos(const glm::vec2&) override;
 	void setTrail(bool) override;
 	void setDeformed(bool) override;
 	void setScale(const glm::vec2&) override;

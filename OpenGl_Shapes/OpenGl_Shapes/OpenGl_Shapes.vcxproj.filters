@@ -88,10 +88,10 @@
     <ClCompile Include="ShapeUnion.cpp">
       <Filter>Source Files\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="ShapeFactory.cpp">
+    <ClCompile Include="Memento.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Memento.cpp">
+    <ClCompile Include="ShapeFactory.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>

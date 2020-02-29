@@ -17,19 +17,20 @@ ShapeFactory::ShapeFactory() {
 	_star.setTrail(true);
 }
 
-Shape ShapeFactory::getShape(ShapeType type)
+Shape* ShapeFactory::getShape(const std::string& type)
 {
 	static ShapeFactory factory;
-	if (type == ShapeType::Octagon) {
-		return factory._octagon;
+	if (type == "triangle") {
+		return new Shape(factory._triangle);
 	}
-	else if (type == ShapeType::Square) {
-		return factory._square;
+	else if (type == "square") {
+		return new Shape(factory._square);
 	}
-	else if (type == ShapeType::Star) {
-		return factory._star;
+	else if (type == "star") {
+		return new Shape(factory._star);
 	}
-	else if (type == ShapeType::Triangle) {
-		return factory._triangle;
+	else if (type == "octagon") {
+		return new Shape(factory._octagon);
 	}
+	return nullptr;
 }

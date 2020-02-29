@@ -9,6 +9,7 @@
 #include "Interfaces.h"
 #include "BoundingBox.h"
 #include "RenderSystem.h"
+#include "Memento.h"
 
 class Shape: public ICanvasComponent {
 private:
@@ -19,7 +20,6 @@ private:
 	glm::vec2 _scale;
 	glm::vec2 _position;
 	glm::vec4 _color;
-	bool _isHillighted;
 	bool _isHidden;
 	bool _isDeformed;
 	bool _hasTrail;
@@ -32,6 +32,8 @@ private:
 	void fillTrail();
 	void drawTrail();
 
+	friend class Memento;
+
 public:
 	void setScale(const glm::vec2&) override;
 	void setPos(const glm::vec2&) override;
@@ -39,8 +41,6 @@ public:
 	void setTrail(bool) override;
 	void setDeformed(bool) override;
 	void setHidden(bool) override;
-
-	void setHilighed(bool);
 
 	void translate(const glm::vec2&) override;
 	void clampCanvasFit();

@@ -88,11 +88,6 @@ void Shape::setTrail(bool state)
 	}
 }
 
-void Shape::setHilighed(bool state)
-{
-	_isHillighted = state;
-}
-
 void Shape::setDeformed(bool state)
 {
 	if (state && !_isDeformed)
@@ -141,9 +136,9 @@ void Shape::print(std::ostream& stream, std::string indent) const
 		<< ") Scale: (" << _scale.x << ", " << _scale.y
 		<< ") Position: (" << _position.x << ", " << _position.y
 		<< "), Deformed: " << _isDeformed
-		<< ", Hilighted: " << _isHillighted 
 		<< ", Hidden: " << _isHidden
 		<< std::endl;
+	//+ add a couple fields
 
 }
 
@@ -151,7 +146,6 @@ Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_scale(glm::vec2(1.0f)),
 	_position(glm::vec2(0.0f)),
 	_color(glm::vec4(0.0f)),
-	_isHillighted(false),
 	_isDeformed(false),
 	_trail(std::deque<glm::vec2>()),
 	_hasTrail(false),

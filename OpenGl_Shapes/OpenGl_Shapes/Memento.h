@@ -1,9 +1,15 @@
 #pragma once
-#include <iostream>
+#include <string>
 #include "Shape.h"
+#include "ShapeUnion.h"
+#include "Interfaces.h"
 
 class Memento {
+private:
+	std::string _filePath;
+	void serializeHelper(ICanvasComponent* item, std::ostream& stream) const;
+
 public:
-	void serialize(std::istream&, const Shape*);
-	void deserialize(std::ostream&, const Shape*);
+	Memento(const std::string& filePath);
+	void serialize(ICanvasComponent* item);
 };

@@ -14,6 +14,7 @@
 #include "Window.h"
 #include "ShapeFactory.h"
 #include "Interfaces.h"
+#include "Memento.h"
 
 class Program {
 private:

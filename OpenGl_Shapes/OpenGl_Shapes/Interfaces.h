@@ -18,6 +18,11 @@ public:
 	virtual void setPos(const glm::vec2&) = 0;
 };
 
+class IClonable {
+public:
+	virtual IClonable* clone() const = 0;
+};
+
 class IPrintable {
 public:
 	virtual void print(std::ostream& stream, std::string indent) const = 0;

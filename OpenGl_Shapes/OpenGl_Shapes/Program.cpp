@@ -9,7 +9,8 @@ Program::Program() :
 	glewInit();
 
 	Window::getInstance().setKeyCallback(onKeyCallback); //first
-	RenderSystem::getInstance().setShader(std::unique_ptr<Shader>(new Shader("../../shader/vertexShader.glsl", "../../shader/fragmentShader.glsl")));
+	RenderSystem::getInstance().setShader(
+		std::make_unique<Shader>("../../shader/vertexShader.glsl", "../../shader/fragmentShader.glsl"));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -63,7 +64,9 @@ void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
 
 void Program::menu()
 {
-	std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
+	Memento memento( "savings.txt" );
+
+	const std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
 		std::cout << "Enter color <R, G, B, A> (0.0f - 1.0f), or type -1 to skip: ";
 		glm::vec4 newColor(1.0f);
 		std::cin >> newColor.r;
@@ -87,6 +90,7 @@ void Program::menu()
 
 		std::cout << "Enter position <X, Y>, or type -1 to skip: ";
 		glm::vec2 newPos(1.0f);
+		std::cin >> newPos.x;
 		if (newPos.x != -1)
 		{
 			std::cin >> newPos.y;
@@ -130,6 +134,7 @@ void Program::menu()
 		}
 		else if (command == "print") {
 			_anchor.print(std::cout);
+			memento.serialize(&_anchor);
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";
@@ -184,23 +189,12 @@ void Program::menu()
 			if (type == "union") {
 				newElem = new ShapeUnion();
 			}
-			else if (type == "square") {
-				newElem = new Shape(ShapeFactory::getShape(ShapeType::Square));
-			}
-			else if (type == "triangle") {
-				newElem = new Shape(ShapeFactory::getShape(ShapeType::Triangle));
-			}
-			else if (type == "star") {
-				newElem = new Shape(ShapeFactory::getShape(ShapeType::Star));
-			}
-			else if (type == "octagon") {
-				newElem = new Shape(ShapeFactory::getShape(ShapeType::Octagon));
-			}
 			else {
-				std::cout << "ERROR: Invalid type!" << std::endl;
-				continue;
+				newElem = static_cast<ICanvasComponent*>(ShapeFactory::getShape(type));
+				if (newElem == nullptr)
+					continue;
 			}
-
+				
 			newElem->setId(Id);
 			
 			if (type != "union")
