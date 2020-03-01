@@ -59,7 +59,7 @@ void Shape::drawTrail()
 		glm::vec4 newColor = _color;
 		newColor.a *= opacity;
 		RenderSystem::getInstance().setColor(newColor);
-		RenderSystem::getInstance().render(_buffer->getVAO(), _buffer->getVertexCount());
+		RenderSystem::getInstance().render(_buffer->getVao(), _buffer->getVertexCount());
 	}
 }
 
@@ -127,7 +127,7 @@ void Shape::draw()
 
 	RenderSystem::getInstance().setShapeTransform(calcShapeMatrix());
 	RenderSystem::getInstance().setColor(_color);
-	RenderSystem::getInstance().render(_buffer->getVAO(), _buffer->getVertexCount());
+	RenderSystem::getInstance().render(_buffer->getVao(), _buffer->getVertexCount());
 }
 
 void Shape::print(std::ostream& stream, std::string indent) const

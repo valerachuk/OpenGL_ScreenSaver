@@ -3,7 +3,7 @@
 struct BoundingBox {
 	float _top, _bottom, _left, _right;
 
-	BoundingBox(float top, float bottom, float left, float right) : 
+	BoundingBox(const float top, const float bottom, const float left, const float right) : 
 		_top(top), 
 		_bottom(bottom), 
 		_left(left), 

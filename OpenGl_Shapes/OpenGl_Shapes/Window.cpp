@@ -1,20 +1,20 @@
 #include "Window.h"
 
 Window::Window() : 
-	keyCallback(nullptr)
+	_keyCallback(nullptr)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	handle = glfwCreateWindow(650, 650, "Shapes", nullptr, nullptr);
+	_handle = glfwCreateWindow(650, 650, "Shapes", nullptr, nullptr);
 
-	if (handle == nullptr)
+	if (_handle == nullptr)
 	{
 		throw new std::runtime_error("Failed to create window");
 	}
-	glfwMakeContextCurrent(handle);
+	glfwMakeContextCurrent(_handle);
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
@@ -22,22 +22,22 @@ Window::Window() :
 		throw new std::runtime_error("Failed to initialize GLEW");
 	}
 
-	glfwSetWindowUserPointer(handle, this);
-	glfwSetKeyCallback(handle, internalKeyCallback);
+	glfwSetWindowUserPointer(_handle, this);
+	glfwSetKeyCallback(_handle, internalKeyCallback);
 
 }
 
 Window::~Window()
 {
-	glfwDestroyWindow(handle);
+	glfwDestroyWindow(_handle);
 }
 
 void Window::internalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	auto handle = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	if (handle->keyCallback != nullptr)
+	if (handle->_keyCallback != nullptr)
 	{
-		handle->keyCallback((KeyCode)key, (Action)action, (Modifier)mods);
+		handle->_keyCallback(static_cast<KeyCode>(key), static_cast<Action>(action), static_cast<Modifier>(mods));
 	}
 }
 
@@ -50,25 +50,25 @@ Window& Window::getInstance()
 uint32_t Window::getWidth() const
 {
 	int width, height;
-	glfwGetFramebufferSize(handle, &width, &height);
+	glfwGetFramebufferSize(_handle, &width, &height);
 	return width;
 }
 
-uint32_t Window::getHeigth() const
+uint32_t Window::getHeight() const
 {
 	int width, height;
-	glfwGetFramebufferSize(handle, &width, &height);
+	glfwGetFramebufferSize(_handle, &width, &height);
 	return height;
 }
 
-void Window::setKeyCallback(const KeyCallback& _keyCallback)
+void Window::setKeyCallback(const KeyCallback& keyCallback)
 {
-	keyCallback = _keyCallback;
+	_keyCallback = keyCallback;
 }
 
 GLFWwindow* Window::getGLFWHandle()
 {
-	return handle;
+	return _handle;
 }
 
 void Window::hideConsole()
@@ -83,29 +83,10 @@ void Window::showConsole()
 
 void Window::showWindow()
 {
-	glfwShowWindow(handle);
+	glfwShowWindow(_handle);
 }
 
 void Window::hideWindow()
 {
-	glfwHideWindow(handle);
-}
-
-bool Window::requestFilePath(char* path)
-{
-	OPENFILENAMEA ofn;
-
-	ZeroMemory(&ofn, sizeof(ofn));
-
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFilter = "Ascii Stereolithography (.stl)\0*.stl";
-	ofn.lpstrFile = path;
-	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = MAX_PATH;
-	ofn.nMaxFileTitle = MAX_PATH;
-	ofn.lpstrTitle = "Privet, let me open your file...";
-	ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-
-	return GetOpenFileNameA(&ofn);
+	glfwHideWindow(_handle);
 }

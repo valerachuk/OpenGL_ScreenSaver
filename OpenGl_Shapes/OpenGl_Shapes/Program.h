@@ -7,9 +7,9 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include "Buffer.h"
 #include "Shape.h"
 #include "ShapeUnion.h"
-#include "Buffer.h"
 #include "RenderSystem.h"
 #include "Window.h"
 #include "ShapeFactory.h"
@@ -32,5 +32,5 @@ private:
 
 public:
 	static Program& getInstance();
-	void Start();
+	void start();
 };

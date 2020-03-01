@@ -134,7 +134,7 @@ void Program::menu()
 		}
 		else if (command == "print") {
 			_anchor.print(std::cout);
-			memento.serialize(&_anchor);
+			memento.serialize(static_cast<ICanvasComponent*>(&_anchor));
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";
@@ -201,7 +201,7 @@ void Program::menu()
 				changeProps(newElem);
 
 			auto toAdd = std::unique_ptr<ICanvasComponent>(newElem);
-			parent->Add(toAdd);
+			parent->add(toAdd);
 		}
 
 	} while (command != "quit");
@@ -217,7 +217,7 @@ Program& Program::getInstance()
 	return inst;
 }
 
-void Program::Start()
+void Program::start()
 {
 	menu();
 

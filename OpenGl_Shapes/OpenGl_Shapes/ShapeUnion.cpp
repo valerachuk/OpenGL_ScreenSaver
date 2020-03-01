@@ -5,7 +5,7 @@ void ShapeUnion::forEach(std::function<void(std::unique_ptr<ICanvasComponent>&)>
 	const auto _ = std::for_each(_children.begin(), _children.end(), func);
 }
 
-void ShapeUnion::Add(std::unique_ptr<ICanvasComponent>& iShapePtr)
+void ShapeUnion::add(std::unique_ptr<ICanvasComponent>& iShapePtr)
 {
 	_children.push_back(std::move(iShapePtr));
 }
@@ -15,9 +15,9 @@ ISelectable* ShapeUnion::getById(int id)
 	if (_id == id)
 		return this;
 
-	for (size_t i = 0; i < _children.size(); i++)
+	for (auto& i : _children)
 	{
-		ISelectable* selectable = _children[i]->getById(id);
+		ISelectable* selectable = i->getById(id);
 		if (selectable)
 			return selectable;
 	}
@@ -71,10 +71,10 @@ BoundingBox ShapeUnion::calcBoundingBox() const
 	auto smartComparer = [&currentField](const std::unique_ptr<ICanvasComponent>& a, const std::unique_ptr<ICanvasComponent>& b) 
 	{
 		BoundingBox boxA = a->calcBoundingBox();
-		float fieldA = *(&boxA._top + currentField);
+		const float fieldA = *(&boxA._top + currentField);
 
 		BoundingBox boxB = b->calcBoundingBox();
-		float fieldB = *(&boxB._top + currentField);
+		const float fieldB = *(&boxB._top + currentField);
 
 		return fieldA < fieldB;
 	};
@@ -96,8 +96,8 @@ BoundingBox ShapeUnion::calcBoundingBox() const
 
 void ShapeUnion::clampCanvasFit()
 {
-	std::function<float(float, float)> cutOver = [](float value, float max) {return value > max ? max - value : 0; };
-	std::function<float(float, float)> cutUnder = [](float value, float min) {return value < min ? min - value : 0; };
+	const std::function<float(float, float)> cutOver = [](float value, float max) {return value > max ? max - value : 0; };
+	const std::function<float(float, float)> cutUnder = [](float value, float min) {return value < min ? min - value : 0; };
 
 	glm::vec2 clampVector = glm::vec2(0.0f);
 

@@ -43,13 +43,13 @@ public:
 	void setHidden(bool) override;
 
 	void translate(const glm::vec2&) override;
-	void clampCanvasFit();
+	void clampCanvasFit() override;
 
 	bool isOtherCollision(const Shape&);
 	void draw() override;
 
 	void print(std::ostream& stream, std::string indent = "") const override;
 
-	Shape(std::shared_ptr<Buffer>);
+	explicit Shape(std::shared_ptr<Buffer>);
 
 };

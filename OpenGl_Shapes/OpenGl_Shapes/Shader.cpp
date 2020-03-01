@@ -1,9 +1,8 @@
 #include "Shader.h"
 
-std::string Shader::ReadFile(const char* path)
+std::string Shader::readFile(const char* path)
 {
     std::ifstream file(path);
-    std::string shaderString;
     std::stringstream sstream;
 
     if (!file.is_open()) {
@@ -11,7 +10,7 @@ std::string Shader::ReadFile(const char* path)
     }
 
     sstream << file.rdbuf();
-    shaderString = sstream.str();
+    std::string shaderString = sstream.str();
     shaderString.push_back(0);
     file.close();
 
@@ -20,16 +19,15 @@ std::string Shader::ReadFile(const char* path)
 
 Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) : _shader(0)
 {
+	const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    
-    std::string stupudString = ReadFile(vertexPath);
+    std::string stupudString = readFile(vertexPath);
     const GLchar* vertexShaderFile = stupudString.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderFile, NULL);
     glCompileShader(vertexShader);
 
-    stupudString = ReadFile(fragmentPath);
+    stupudString = readFile(fragmentPath);
     const GLchar* fragmentShaderFile = stupudString.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderFile, NULL);
     glCompileShader(fragmentShader);
@@ -61,7 +59,7 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath) : _shader(0
     glDeleteShader(fragmentShader);
 }
 
-void Shader::UseProgram() const{
+void Shader::useProgram() const{
 	glUseProgram(_shader);
 }
 

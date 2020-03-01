@@ -55,8 +55,8 @@ enum class KeyCode {
 class Window {
 private:
 	using KeyCallback = std::function<void(KeyCode, Action, Modifier)>;
-	GLFWwindow* handle;
-	KeyCallback keyCallback;
+	GLFWwindow* _handle;
+	KeyCallback _keyCallback;
 	
 	Window();
 	~Window();
@@ -70,7 +70,7 @@ public:
 	static Window& getInstance();
 
 	uint32_t getWidth() const;
-	uint32_t getHeigth() const;
+	uint32_t getHeight() const;
 	void setKeyCallback(const KeyCallback&);
 
 	GLFWwindow* getGLFWHandle();
@@ -79,7 +79,5 @@ public:
 	static void showConsole();
 	void showWindow();
 	void hideWindow();
-
-	static bool requestFilePath(char*);
 
 };

@@ -28,13 +28,13 @@ void RenderSystem::clearDisplay(float red, float green, float blue)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenderSystem::render(GLuint VAO, size_t verticesCount)
+void RenderSystem::render(GLuint vao, size_t verticesCount)
 {
 	checkShader();
 
-	glBindVertexArray(VAO);
+	glBindVertexArray(vao);
 
-	_shader->UseProgram();
+	_shader->useProgram();
 	sendUniformsToShader();
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, verticesCount);

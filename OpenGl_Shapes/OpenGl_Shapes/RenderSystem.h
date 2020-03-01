@@ -1,9 +1,7 @@
 #pragma once
-#include <iostream>
-#include <vector>
 #include <memory>
-#include <GL\glew.h>
-#include <glm\glm.hpp>
+#include <GL/glew.h>
+#include <glm/glm.hpp>
 #include "Shader.h"
 
 class RenderSystem
@@ -29,7 +27,7 @@ public:
 
 	static void clearDisplay(float red, float green, float blue);
 
-	void render(GLuint VAO, size_t verticesCount);
+	void render(GLuint vao, size_t verticesCount);
 	
 	void setColor(const glm::vec4& color);
 	void setShapeTransform(const glm::mat4&);

@@ -2,16 +2,16 @@
 
 Buffer::Buffer(const std::vector<glm::vec2>& vertices, const std::string& name) : _shapeName(name)
 {
-	vertexCount = vertices.size();
+	_vertexCount = vertices.size();
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
+	glGenVertexArrays(1, &_vao);
+	glGenBuffers(1, &_vbo);
+	glBindVertexArray(_vao);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertexCount * 2 * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, _vertexCount * 2 * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), static_cast<GLvoid*>(0));
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(0);
@@ -19,18 +19,18 @@ Buffer::Buffer(const std::vector<glm::vec2>& vertices, const std::string& name) 
 
 Buffer::~Buffer()
 {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &_vao);
+	glDeleteBuffers(1, &_vbo);
 }
 
-const GLuint& Buffer::getVAO() const
+const GLuint& Buffer::getVao() const
 {
-	return VAO;
+	return _vao;
 }
 
 const GLuint& Buffer::getVertexCount() const
 {
-	return vertexCount;
+	return _vertexCount;
 }
 
 const std::string& Buffer::getName() const

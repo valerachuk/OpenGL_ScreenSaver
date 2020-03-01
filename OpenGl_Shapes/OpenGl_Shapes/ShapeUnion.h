@@ -16,7 +16,7 @@ private:
 	friend class Memento;
 
 public:
-	void Add(std::unique_ptr<ICanvasComponent>&);
+	void add(std::unique_ptr<ICanvasComponent>&);
 
 	ISelectable* getById(int id) override;
 

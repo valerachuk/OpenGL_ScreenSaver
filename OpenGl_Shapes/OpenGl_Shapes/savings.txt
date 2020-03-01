@@ -1,2 +1,3 @@
  id 0 type union 
- parent 0 id 1 type star scale 0.3 0.3 pos 0 0 color 0 1 1 1 isDeformed 0 isHidden 0 hasTrail 1
+ parent 0 id 1 type square scale 0.4 0.8 pos 0 0 color 1 1 1 1 isDeformed 0 isHidden 0 hasTrail 0
+3e_outFile             rrgrgrgrg parent 0 id 2 type star scale 0.3 0.3 pos 0 0 color 0 1 1 1 isDeformed 0 isHidden 0 hasTrail 1
