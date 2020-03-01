@@ -5,8 +5,8 @@ Program::Program() :
 	_moveSpeed(0.02f),
 	_currentSelection(nullptr)
 {
-	glfwInit();
 	glewInit();
+	glfwInit();
 
 	Window::getInstance().setKeyCallback(onKeyCallback); //first
 	RenderSystem::getInstance().setShader(
@@ -64,7 +64,7 @@ void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
 
 void Program::menu()
 {
-	Memento memento( "savings.txt" );
+	//Memento memento( "savings.txt" );
 
 	const std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
 		std::cout << "Enter color <R, G, B, A> (0.0f - 1.0f), or type -1 to skip: ";
@@ -134,7 +134,7 @@ void Program::menu()
 		}
 		else if (command == "print") {
 			_anchor.print(std::cout);
-			memento.serialize(static_cast<ICanvasComponent*>(&_anchor));
+			//memento.serialize(static_cast<ICanvasComponent*>(&_anchor));
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";

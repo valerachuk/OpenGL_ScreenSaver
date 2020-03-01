@@ -1,101 +1,104 @@
-#include "memento.h"
+#include "Memento.h"
 
-memento::memento(const std::string& filepath) : _filepath(filepath) { }
+#include "ShapeFactory.h"
 
-void memento::serialize(icanvascomponent* item)
+Memento::Memento(const std::string& filePath) : _filePath(filePath) { }
+
+void Memento::serialize(ICanvasComponent* item)
 {
-	_outfile.open(_filepath);
-	serializehelper(item);
-	_outfile.close();
+	_outFile.open(_filePath);
+	serializeHelper(item);
+	_outFile.close();
 }
 
-std::unique_ptr<shape> memento::createshapeformstream(const std::string& type, int& parentid)
+void Memento::serializeHelper(ICanvasComponent* item)
 {
-	auto shapeunq = std::unique_ptr<shape>(shapefactory::getshape(type));
-	if (!shapeunq)
-	{
-		throw std::runtime_error("file: " + _filepath + "is corrupter");
-	}
-	
-	checknextword("id");
-	shapeunq->setid(readitem<int>());
-
-	checknextword("scale");
-	glm::vec2 scale(0.0f);
-	scale.x = readitem<float>();
-	scale.y = readitem<float>();
-	shapeunq->setscale(scale);
-	
-	checknextword("pos");
-	glm::vec2 position(0.0f);
-	position.x = readitem<float>();
-	position.y = readitem<float>();
-	shapeunq->setpos(position);
-
-	checknextword("color");
-	glm::vec4 color(0.0f);
-	color.r = readitem<float>();
-	color.g = readitem<float>();
-	color.b = readitem<float>();
-	color.a = readitem<float>();
-	shapeunq->setcolor(color);
-
-	checknextword("isdeformed");
-	shapeunq->setdeformed(readitem<bool>());
-	
-	checknextword("ishidden");
-	shapeunq->sethidden(readitem<bool>());
-	
-	checknextword("hastrail");
-	shapeunq->settrail(readitem<bool>());
-
-	return shapeunq;
-}
-
-void memento::checknextword(const std::string& str)
-{
-	if (_infile.eof())
-		throw std::runtime_error("eof reached, file " + _filepath + " is corrupted");
-	
-	std::string newstr;
-	_infile >> newstr;
-
-	if (newstr != str)
-		throw std::invalid_argument("string mismatch: " + str + " != " + newstr);
-}
-
-void memento::serializehelper(icanvascomponent* item)
-{
-	shape* shape = dynamic_cast<shape*>(item);
+	Shape* shape = dynamic_cast<Shape*>(item);
 	if (shape)
 	{
-		_outfile << 
-			" type " << shape->_buffer->getname() <<
+		_outFile << 
+			" type " << shape->_buffer->getName() <<
 			" id " << shape->_id <<
 			" scale " << shape->_scale.x << " " << shape->_scale.y <<
 			" pos " << shape->_position.x << " " << shape->_position.y <<
 			" color " << shape->_color.r << " " << shape->_color.g << " " << shape->_color.b << " " << shape->_color.a <<
-			" isdeformed " << shape->_isdeformed <<
-			" ishidden " << shape->_ishidden <<
-			" hastrail " << shape->_hastrail <<
+			" isDeformed " << shape->_isDeformed <<
+			" isHidden " << shape->_isHidden <<
+			" hasTrail " << shape->_hasTrail <<
 			std::endl;
 		return;
 	}
 
-	auto shapeunion = dynamic_cast<shapeunion*>(item);
+	auto shapeUnion = dynamic_cast<ShapeUnion*>(item);
 
-	if (!shapeunion)
+	if (!shapeUnion)
 	{
-		throw std::invalid_argument("can't be converted to shape or shapeunion");
+		throw std::invalid_argument("can't be converted to shape or shapeUnion");
 	}
 
-	_outfile << 
+	_outFile << 
 		" type union " << 
-		" id " << shapeunion->_id << 
+		" id " << shapeUnion->_id << 
 		std::endl;
 
-	shapeunion->foreach([this, &shapeunion](std::unique_ptr<icanvascomponent>& ishapeptr) {
-		_outfile << " parent " << shapeunion->_id;
-		serializehelper(ishapeptr.get());
+	shapeUnion->forEach([this, &shapeUnion](std::unique_ptr<ICanvasComponent>& iShapePtr) {
+		_outFile << " parent " << shapeUnion->_id;
+		serializeHelper(iShapePtr.get());
 	});
+}
+
+std::unique_ptr<Shape> Memento::createShapeFormStream(const std::string& type, int& parentId)
+{
+	auto shapeUnq = std::unique_ptr<Shape>(ShapeFactory::getShape(type));
+	if (!shapeUnq)
+	{
+		throw std::runtime_error("file: " + _filePath + "is corrupter");
+	}
+	
+	checkNextWord("id");
+	shapeUnq->setId(readItem<int>());
+
+	checkNextWord("scale");
+	glm::vec2 scale(0.0f);
+	scale.x = readItem<float>();
+	scale.y = readItem<float>();
+	shapeUnq->setScale(scale);
+	
+	checkNextWord("pos");
+	glm::vec2 position(0.0f);
+	position.x = readItem<float>();
+	position.y = readItem<float>();
+	shapeUnq->setPos(position);
+
+	checkNextWord("color");
+	glm::vec4 color(0.0f);
+	color.r = readItem<float>();
+	color.g = readItem<float>();
+	color.b = readItem<float>();
+	color.a = readItem<float>();
+	shapeUnq->setColor(color);
+
+	checkNextWord("isDeformed");
+	shapeUnq->setDeformed(readItem<bool>());
+	
+	checkNextWord("isHidden");
+	shapeUnq->setHidden(readItem<bool>());
+	
+	checkNextWord("hasTrail");
+	shapeUnq->setTrail(readItem<bool>());
+
+	return shapeUnq;
+}
+
+
+void Memento::checkNextWord(const std::string& str)
+{
+	if (_inFile.eof())
+		throw std::runtime_error("EOF reached, file " + _filePath + " is corrupted");
+	
+	std::string newStr;
+	_inFile >> newStr;
+	if (newStr != str)
+
+		throw std::invalid_argument("string mismatch: " + str + " != " + newStr);
 }

@@ -1,7 +1,7 @@
 #pragma once
+#include <string>
 #include "Buffer.h"
 #include "Shape.h"
-#include <string>
 
 class ShapeFactory {
 private:

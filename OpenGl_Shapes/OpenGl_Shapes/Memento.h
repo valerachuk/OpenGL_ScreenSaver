@@ -1,10 +1,10 @@
 #pragma once
+#include "ShapeFactory.h" 
 #include <string>
 #include <memory>
 #include "Shape.h"
 #include "ShapeUnion.h"
 #include "Interfaces.h"
-#include "ShapeFactory.h"
 
 class Memento {
 private:
@@ -14,7 +14,7 @@ private:
 	
 	void serializeHelper(ICanvasComponent* item);
 	
-	void deserializeHelper();
+	//void deserializeHelper();
 	std::unique_ptr<Shape> createShapeFormStream(const std::string& type, int& parentId);
 	void checkNextWord(const std::string& str);
 
@@ -32,7 +32,7 @@ private:
 public:
 	explicit Memento(const std::string& filePath);
 	void serialize(ICanvasComponent* item);
-	ShapeUnion deserialize();
+	//ShapeUnion deserialize();
 	
 };
 

@@ -9,7 +9,8 @@
 #include "Interfaces.h"
 #include "BoundingBox.h"
 #include "RenderSystem.h"
-#include "Memento.h"
+
+class Memento;
 
 class Shape: public ICanvasComponent {
 private:
