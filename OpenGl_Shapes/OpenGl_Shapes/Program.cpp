@@ -3,7 +3,8 @@
 Program::Program() : 
 	_moveAxis(glm::vec2(0.0f)),
 	_moveSpeed(0.02f),
-	_currentSelection(nullptr)
+	_currentSelection(nullptr),
+	_anchor(ShapeUnion())
 {
 	glewInit();
 	glfwInit();
@@ -14,6 +15,8 @@ Program::Program() :
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	_anchor.setId(0);
 }
 
 void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
@@ -64,7 +67,7 @@ void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
 
 void Program::menu()
 {
-	//Memento memento( "savings.txt" );
+	Memento memento( "savings.txt" );
 
 	const std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
 		std::cout << "Enter color <R, G, B, A> (0.0f - 1.0f), or type -1 to skip: ";
@@ -134,7 +137,14 @@ void Program::menu()
 		}
 		else if (command == "print") {
 			_anchor.print(std::cout);
-			//memento.serialize(static_cast<ICanvasComponent*>(&_anchor));
+		}
+		else if (command == "save")
+		{
+			memento.serialize(static_cast<ShapeUnion*>(&_anchor));
+		}
+		else if (command == "load")
+		{
+			_anchor = memento.deserialize();
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";
@@ -148,16 +158,43 @@ void Program::menu()
 				_currentSelection = selection;
 		}
 		else if (command == "edit") {
-			int Id;
+			int id;
 			std::cout << "Enter item's id: ";
-			std::cin >> Id;
+			std::cin >> id;
 			ICanvasComponent* shape;
-			if (!(shape = dynamic_cast<ICanvasComponent*>(_anchor.getById(Id))))
+			if (!(shape = dynamic_cast<ICanvasComponent*>(_anchor.getById(id))))
 			{
 				std::cout << "ERROR: Invalid id!" << std::endl;
 				continue;
 			}
 			changeProps(shape);
+		}
+		else if (command == "clone")
+		{
+			int id;
+			std::cout << "Enter id to clone: ";
+			std::cin >> id;
+			ICanvasComponent* toClone = dynamic_cast<ICanvasComponent*>(_anchor.getById(id));
+
+			if (!toClone)
+			{
+				std::cout << "Invalid id: " << id << std::endl;
+				continue;
+			}
+			
+			int parentId;
+			std::cout << "Enter parent id: ";
+			std::cin >> parentId;
+			ShapeUnion* newParent = dynamic_cast<ShapeUnion*>(_anchor.getById(parentId));
+
+			if (!newParent)
+			{
+				std::cout << "Invalid id: " << id << std::endl;
+				continue;
+			}
+
+			std::unique_ptr<ICanvasComponent> clone = std::unique_ptr<ICanvasComponent>(static_cast<ICanvasComponent*>(toClone->deepClone()));
+			newParent->add(clone);
 		}
 		else if (command == "add") {
 			int parentId;

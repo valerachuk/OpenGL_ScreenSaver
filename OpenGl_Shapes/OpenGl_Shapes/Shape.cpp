@@ -130,6 +130,11 @@ void Shape::draw()
 	RenderSystem::getInstance().render(_buffer->getVao(), _buffer->getVertexCount());
 }
 
+IClonable* Shape::deepClone() const
+{
+	return new Shape(*this);
+}
+
 void Shape::print(std::ostream& stream, std::string indent) const
 {
 	stream << indent << _id << ") Type:Shape, Color: (" << _color.r << ", " << _color.g << ", " << _color.b

@@ -14,7 +14,7 @@ private:
 	
 	void serializeHelper(ICanvasComponent* item);
 	
-	//ShapeUnion deserializeHelper();
+	ShapeUnion deserializeHelper();
 	std::unique_ptr<Shape> createShapeFormStream(const std::string& type);
 	void checkNextWord(const std::string& str);
 
@@ -31,8 +31,8 @@ private:
 
 public:
 	Memento(const std::string& filePath);
-	void serialize(ICanvasComponent* item);
-	//ShapeUnion deserialize();
+	void serialize(ShapeUnion* item);
+	ShapeUnion deserialize();
 
 };
 

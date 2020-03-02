@@ -5,7 +5,8 @@
 #include <functional>
 #include "Interfaces.h"
 #include "BoundingBox.h"
-#include "Memento.h"
+
+class Memento;
 
 class ShapeUnion : public ICanvasComponent {
 private:
@@ -31,6 +32,8 @@ public:
 
 	void translate(const glm::vec2&) override;
 	void clampCanvasFit() override;
+
+	IClonable* deepClone() const override;
 	
 	void print(std::ostream& stream, std::string indent = "") const override;
 };

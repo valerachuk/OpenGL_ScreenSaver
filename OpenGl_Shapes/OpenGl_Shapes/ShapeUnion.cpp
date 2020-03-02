@@ -112,6 +112,19 @@ void ShapeUnion::clampCanvasFit()
 	translate(clampVector);
 }
 
+IClonable* ShapeUnion::deepClone() const
+{
+	ShapeUnion* sUnion = new ShapeUnion();
+	sUnion->setId(_id);
+	for (auto& item: _children)
+	{
+		std::unique_ptr<ICanvasComponent> newComponent = std::unique_ptr<ICanvasComponent>(static_cast<ICanvasComponent*>(item->deepClone()));
+		sUnion->add(newComponent);
+	}
+
+	return sUnion;
+}
+
 void ShapeUnion::print(std::ostream& stream, std::string indent) const
 {
 	stream << indent << _id << ") Type:Union" << std::endl;

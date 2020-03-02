@@ -49,6 +49,8 @@ public:
 	bool isOtherCollision(const Shape&);
 	void draw() override;
 
+	IClonable* deepClone() const override;
+
 	void print(std::ostream& stream, std::string indent = "") const override;
 
 	explicit Shape(std::shared_ptr<Buffer>);
