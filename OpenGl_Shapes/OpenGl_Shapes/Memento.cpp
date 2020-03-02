@@ -1,15 +1,29 @@
 #include "Memento.h"
 
-#include "ShapeFactory.h"
-
 Memento::Memento(const std::string& filePath) : _filePath(filePath) { }
 
 void Memento::serialize(ICanvasComponent* item)
 {
 	_outFile.open(_filePath);
+	if (!_outFile.is_open())
+		throw std::runtime_error("Cannot open file: " + _filePath);
+	
 	serializeHelper(item);
 	_outFile.close();
 }
+
+//ShapeUnion Memento::deserialize()
+//{
+//	_inFile.open(_filePath);
+//	if (!_inFile.is_open())
+//		throw std::runtime_error("Cannot open file: " + _filePath);
+//
+//	ShapeUnion toRet = deserializeHelper();
+//
+//	_inFile.close();
+//
+//	return toRet;
+//}
 
 void Memento::serializeHelper(ICanvasComponent* item)
 {
@@ -46,8 +60,50 @@ void Memento::serializeHelper(ICanvasComponent* item)
 		serializeHelper(iShapePtr.get());
 	});
 }
+//
+//ShapeUnion Memento::deserializeHelper()
+//{
+//	ShapeUnion mainUnion;
+//	mainUnion.setId(0);
+//	
+//	//read first line
+//	checkNextWord("type");
+//	checkNextWord("union");
+//	checkNextWord("id");
+//	mainUnion.setId(readItem<int>());
+//	
+//	while (!_inFile.eof())
+//	{
+//		checkNextWord("parent");
+//		const int parentId = readItem<int>();
+//		ShapeUnion* itemsParent = dynamic_cast<ShapeUnion*>(mainUnion.getById(parentId));
+//		if (itemsParent == nullptr)
+//			throw std::runtime_error("File reading error, new parent with id " + std::to_string(parentId) + " is not ShapeUnion");
+//
+//		checkNextWord("type");
+//		const std::string type = readItem<std::string>();
+//
+//		if (type == "union")
+//		{
+//			std::unique_ptr<ICanvasComponent> newUnion = std::make_unique<ShapeUnion>();
+//
+//			checkNextWord("id");
+//			const int newId = readItem<int>();
+//			newUnion->setId(newId);
+//			
+//			itemsParent->add(newUnion);
+//		}
+//		else
+//		{
+//			std::unique_ptr<ICanvasComponent> newShape = createShapeFormStream(type);
+//			itemsParent->add(newShape);
+//		}
+//	}
+//
+//	return mainUnion;
+//}
 
-std::unique_ptr<Shape> Memento::createShapeFormStream(const std::string& type, int& parentId)
+std::unique_ptr<Shape> Memento::createShapeFormStream(const std::string& type)
 {
 	auto shapeUnq = std::unique_ptr<Shape>(ShapeFactory::getShape(type));
 	if (!shapeUnq)
@@ -93,12 +149,7 @@ std::unique_ptr<Shape> Memento::createShapeFormStream(const std::string& type, i
 
 void Memento::checkNextWord(const std::string& str)
 {
-	if (_inFile.eof())
-		throw std::runtime_error("EOF reached, file " + _filePath + " is corrupted");
-	
-	std::string newStr;
-	_inFile >> newStr;
+	const std::string newStr = readItem<std::string>();
 	if (newStr != str)
-
 		throw std::invalid_argument("string mismatch: " + str + " != " + newStr);
 }
