@@ -110,14 +110,6 @@ void Shape::translate(const glm::vec2& offset)
 	fillTrail();
 }
 
-bool Shape::isOtherCollision(const Shape& other)
-{
-	return (_position.x + _scale.x / 2 >= other._position.x - other._scale.x / 2 ||
-			_position.x - _scale.x / 2 <= other._position.x + other._scale.x / 2) &&
-			(_position.y + _scale.y / 2 >= other._position.y - other._scale.y / 2 ||
-			_position.y - _scale.y / 2 <= other._position.y + other._scale.y / 2);
-}
-
 void Shape::draw()
 {
 	if (_isHidden)

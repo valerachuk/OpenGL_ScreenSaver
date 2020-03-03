@@ -145,6 +145,7 @@ void Program::menu()
 		else if (command == "load")
 		{
 			_anchor = memento.deserialize();
+			_currentSelection = nullptr;
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";

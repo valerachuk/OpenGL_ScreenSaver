@@ -5,6 +5,11 @@
 #include <string>
 
 class Buffer {
+private:
+	GLuint _vao, _vbo;
+	size_t _vertexCount;
+	std::string _shapeName;
+	
 public:
 	Buffer(const std::vector<glm::vec2>& vertices, const std::string& name);
 	~Buffer();
@@ -13,10 +18,5 @@ public:
 	const GLuint& getVertexCount() const;
 
 	const std::string& getName() const;
-
-private:
-	GLuint _vao, _vbo;
-	size_t _vertexCount;
-	std::string _shapeName;
 
 };

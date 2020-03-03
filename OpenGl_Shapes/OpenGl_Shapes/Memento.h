@@ -30,7 +30,7 @@ private:
 	}
 
 public:
-	Memento(const std::string& filePath);
+	explicit Memento(const std::string& filePath);
 	void serialize(ShapeUnion* item);
 	ShapeUnion deserialize();
 

@@ -46,7 +46,6 @@ public:
 	void translate(const glm::vec2&) override;
 	void clampCanvasFit() override;
 
-	bool isOtherCollision(const Shape&);
 	void draw() override;
 
 	IClonable* deepClone() const override;
