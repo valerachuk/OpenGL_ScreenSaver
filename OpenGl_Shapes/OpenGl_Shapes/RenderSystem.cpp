@@ -8,7 +8,7 @@ RenderSystem::RenderSystem() :
 void RenderSystem::checkShader() const
 {
 	if (_shader == nullptr)
-		throw std::exception_ptr();
+		throw std::invalid_argument("Shader is null");
 }
 
 RenderSystem& RenderSystem::getInstance()

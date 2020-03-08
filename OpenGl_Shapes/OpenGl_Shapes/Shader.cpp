@@ -6,7 +6,7 @@ std::string Shader::readFile(const char* path)
     std::stringstream sstream;
 
     if (!file.is_open()) {
-        throw new std::runtime_error("Can't open the file!");
+        throw std::runtime_error("Can't open the file!");
     }
 
     sstream << file.rdbuf();

@@ -15,6 +15,7 @@
 #include "ShapeFactory.h"
 #include "Interfaces.h"
 #include "Memento.h"
+#include "PathRecorder.h"
 
 class Program {
 private:

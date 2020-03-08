@@ -59,6 +59,9 @@
     <ClInclude Include="Memento.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="PathRecorder.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -92,6 +95,9 @@
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="ShapeFactory.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="PathRecorder.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>

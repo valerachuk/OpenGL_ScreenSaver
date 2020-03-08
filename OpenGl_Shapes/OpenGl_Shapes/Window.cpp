@@ -12,14 +12,14 @@ Window::Window() :
 
 	if (_handle == nullptr)
 	{
-		throw new std::runtime_error("Failed to create window");
+		throw std::runtime_error("Failed to create window");
 	}
 	glfwMakeContextCurrent(_handle);
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		throw new std::runtime_error("Failed to initialize GLEW");
+		throw std::runtime_error("Failed to initialize GLEW");
 	}
 
 	glfwSetWindowUserPointer(_handle, this);

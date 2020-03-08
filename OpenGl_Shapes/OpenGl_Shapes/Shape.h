@@ -11,6 +11,7 @@
 #include "RenderSystem.h"
 
 class Memento;
+class PathRecorder;
 
 class Shape: public ICanvasComponent {
 private:
@@ -33,6 +34,7 @@ private:
 	void fillTrail();
 	void drawTrail();
 
+	friend class PathRecorder;
 	friend class Memento;
 
 public:

@@ -133,19 +133,62 @@ void Program::menu()
 		std::cin >> command;
 
 		if (command == "?" || command == "help") {
-			std::cout << "commands:\n\thelp\n\tprint\n\tselect\n\tadd\n\tedit\n\tquit" << std::endl;
+			std::cout << "commands:\n\thelp\n\tprint\n\tselect\n\tadd\n\tedit\n\tload\n\tsave\n\tclone\n\trecord\n\tplay\n\tquit" << std::endl;
 		}
 		else if (command == "print") {
 			_anchor.print(std::cout);
 		}
+		else if (command == "record")
+		{
+			std::cout << "Enter id: ";
+			int id;
+			std::cin >> id;
+			Shape* selection = dynamic_cast<Shape*>(_anchor.getById(id));
+
+			if (!selection)
+				std::cout << "ERROR: Invalid selection" << std::endl;
+			else
+			{
+				std::cout << "Start recording" << std::endl;
+				PathRecorder::getInstance().startRecording(selection);
+			}
+		}
+		else if (command == "play")
+		{
+			if (PathRecorder::getInstance().hasItem())
+			{
+				PathRecorder::getInstance().startPlaying();
+				std::cout << "Start playing" << std::endl;
+			}
+			else
+			{
+				std::cout << "Cannot start playing, execute record ad first" << std::endl;
+			}
+		}
 		else if (command == "save")
 		{
-			memento.serialize(static_cast<ShapeUnion*>(&_anchor));
+			try
+			{
+				memento.serialize(static_cast<ShapeUnion*>(&_anchor));
+				std::cout << "Done" << std::endl;
+			}
+			catch (std::exception & e)
+			{
+				std::cout << "ERROR: " << e.what() << std::endl;
+			}
 		}
 		else if (command == "load")
 		{
-			_anchor = memento.deserialize();
-			_currentSelection = nullptr;
+			try
+			{
+				_anchor = memento.deserialize();
+				_currentSelection = nullptr;
+				std::cout << "Done" << std::endl;
+			}
+			catch (std::exception& e)
+			{
+				std::cout << "ERROR: " << e.what() << std::endl;
+			}
 		}
 		else if (command == "select") {
 			std::cout << "Enter id: ";
@@ -156,7 +199,10 @@ void Program::menu()
 			if (!selection)
 				std::cout << "ERROR: Invalid selection" << std::endl;
 			else
+			{
 				_currentSelection = selection;
+				std::cout << "Done" << std::endl;
+			}
 		}
 		else if (command == "edit") {
 			int id;
@@ -270,6 +316,7 @@ void Program::start()
 			_currentSelection->translate(_moveAxis * _moveSpeed);
 			_currentSelection->clampCanvasFit();
 		}
+		PathRecorder::getInstance().execute();
 		_anchor.draw();
 
 		glfwSwapBuffers(Window::getInstance().getGLFWHandle());

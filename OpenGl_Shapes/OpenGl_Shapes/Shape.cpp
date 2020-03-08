@@ -1,5 +1,7 @@
 #include "Shape.h"
 
+#include <utility>
+
 void Shape::clampCanvasFit()
 {
 	std::function<float(float, float)> cutOver = [](float value, float max) {return value > max ? max - value : 0; };
@@ -144,7 +146,7 @@ Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_position(glm::vec2(0.0f)),
 	_color(glm::vec4(0.0f)),
 	_isDeformed(false),
-	_trail(std::deque<glm::vec2>()),
 	_hasTrail(false),
+	_trail(std::deque<glm::vec2>()),
 	_isHidden(false),
-	_buffer(buffer) { }
+	_buffer(std::move(buffer)) { }
