@@ -20,6 +20,14 @@ void Shape::clampCanvasFit()
 	translate(clampVector);
 }
 
+bool Shape::isIntersects(Shape& component) const
+{
+	BoundingBox a = calcBoundingBox();
+	BoundingBox b = component.calcBoundingBox();
+
+	return a._left <= b._right && a._right >= b._left && a._top >= b._bottom && a._bottom <= b._top;
+}
+
 BoundingBox Shape::calcBoundingBox() const
 {
 	return BoundingBox(_position.y + _scale.y / 2, _position.y - _scale.y / 2, _position.x - _scale.x / 2, _position.x + _scale.x / 2);
@@ -73,6 +81,11 @@ void Shape::setScale(const glm::vec2& scale)
 void Shape::setPos(const glm::vec2& pos)
 {
 	_position = pos;
+}
+
+const glm::vec2& Shape::getPos() const
+{
+	return _position;
 }
 
 void Shape::setColor(const glm::vec4& color)
@@ -137,8 +150,6 @@ void Shape::print(std::ostream& stream, std::string indent) const
 		<< "), Deformed: " << _isDeformed
 		<< ", Hidden: " << _isHidden
 		<< std::endl;
-	//+ add a couple fields
-
 }
 
 Shape::Shape(std::shared_ptr<Buffer> buffer) :
@@ -150,3 +161,12 @@ Shape::Shape(std::shared_ptr<Buffer> buffer) :
 	_trail(std::deque<glm::vec2>()),
 	_isHidden(false),
 	_buffer(std::move(buffer)) { }
+
+Shape::Shape() :
+	_scale(glm::vec2(1.0f)),
+	_position(glm::vec2(0.0f)),
+	_color(glm::vec4(0.0f)),
+	_isDeformed(false),
+	_hasTrail(false),
+	_trail(std::deque<glm::vec2>()),
+	_isHidden(false) { }

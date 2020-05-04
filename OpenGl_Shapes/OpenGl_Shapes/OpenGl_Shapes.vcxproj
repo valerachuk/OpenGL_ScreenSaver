@@ -21,28 +21,24 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Interfaces.h" />
-    <ClInclude Include="Memento.h" />
-    <ClInclude Include="PathRecorder.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Shape.h" />
-    <ClInclude Include="ShapeFactory.h" />
-    <ClInclude Include="ShapeUnion.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoundingBox.h" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Memento.cpp" />
-    <ClCompile Include="PathRecorder.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="ScreenSaverShape.cpp" />
+    <ClCompile Include="ScreenSaverShape.h" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="ShapeFactory.cpp" />
-    <ClCompile Include="ShapeUnion.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

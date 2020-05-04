@@ -1,299 +1,159 @@
 #include "Program.h"
 
-Program::Program() : 
-	_moveAxis(glm::vec2(0.0f)),
-	_moveSpeed(0.02f),
-	_currentSelection(nullptr),
-	_anchor(ShapeUnion())
+Program::Program()
 {
 	glewInit();
 	glfwInit();
 
-	Window::getInstance().setKeyCallback(onKeyCallback); //first
+	Window::getInstance();
 	RenderSystem::getInstance().setShader(
 		std::make_unique<Shader>("../../shader/vertexShader.glsl", "../../shader/fragmentShader.glsl"));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	_anchor.setId(0);
 }
 
-void Program::onKeyCallback(KeyCode code, Action action, Modifier modif)
+void Program::draw()
 {
-	if (code == KeyCode::F1 && action == Action::Press)
+	auto shape = new ScreenSaverShape();
+	glfwSwapInterval(1);
+	while (!glfwWindowShouldClose(Window::getInstance().getGLFWHandle()))
 	{
-		Program::getInstance().menu();
-		return;
-	}
+		glfwPollEvents();
+		RenderSystem::clearDisplay(1, 1, 1);
 
-	glm::vec2& axis = Program::getInstance()._moveAxis;
-	if (action == Action::Press)
-	{
-		switch (code)
+		_mutex.lock();
+		//std::cout << "Drawing!!" << std::endl;
+		for (auto it = _shapes.begin(); it != _shapes.end(); ++it)
 		{
-		case KeyCode::W:
-			axis.y = 1.0f;
-			break;
-		case KeyCode::A:
-			axis.x = -1.0f;
-			break;
-		case KeyCode::S:
-			axis.y = -1.0f;
-			break;
-		case KeyCode::D:
-			axis.x = 1.0f;
-			break;
+			it->get()->draw();
 		}
-	}
-	else if (action == Action::Release) {
-		switch (code)
-		{
-		case KeyCode::W:
-		case KeyCode::S:
-			axis.y = 0.0f;
-			break;
-		case KeyCode::A:
-		case KeyCode::D:
-			axis.x = 0.0f;
-			break;
-		}
-	}
+		_mutex.unlock();
 
-	if (glm::length(axis) > 0)
-		axis = glm::normalize(axis);
-
+		glfwSwapBuffers(Window::getInstance().getGLFWHandle());
+	}
 }
 
-void Program::menu()
+void Program::addShapes()
 {
-	Memento memento( "savings.txt" );
-
-	const std::function<void(ICanvasComponent*)> changeProps = [](ICanvasComponent* shape) {
-		std::cout << "Enter color <R, G, B, A> (0.0f - 1.0f), or type -1 to skip: ";
-		glm::vec4 newColor(1.0f);
-		std::cin >> newColor.r;
-		if (newColor.r != -1)
-		{
-			std::cin >> newColor.g;
-			std::cin >> newColor.b;
-			std::cin >> newColor.a;
-			shape->setColor(newColor);
-		}
-
-		std::cout << "Enter scale <X, Y> (0.0f - 1.0f), or type -1 to skip: ";
-		glm::vec2 newScale(1.0f);
-		std::cin >> newScale.x;
-		if (newScale.x != -1)
-		{
-			std::cin >> newScale.y;
-			glm::clamp(newScale, glm::vec2(0.0f), glm::vec2(1.0f));
-			shape->setScale(newScale);
-		}
-
-		std::cout << "Enter position <X, Y>, or type -1 to skip: ";
-		glm::vec2 newPos(1.0f);
-		std::cin >> newPos.x;
-		if (newPos.x != -1)
-		{
-			std::cin >> newPos.y;
-			shape->setPos(newPos);
-		}
-
-		std::cout << "Enter hidden state (0, 1), or -1 to skip: ";
-		int state;
-		std::cin >> state;
-		if (state == 1 || state == 0)
-		{
-			shape->setHidden(state);
-		}
-
-		std::cout << "Enter deformed state (0, 1), or -1 to skip: ";
-		std::cin >> state;
-		if (state == 1 || state == 0)
-		{
-			shape->setDeformed(state);
-		}
-
-		std::cout << "Enter trail state (0, 1), or -1 to skip: ";
-		std::cin >> state;
-		if (state == 1 || state == 0)
-		{
-			shape->setTrail(state);
-		}
-
-	};
-
-	Window::getInstance().hideWindow();
-	Window::showConsole();
-	std::string command;
-	do
+	while (true)
 	{
-		std::cout << "-----------------------------" << std::endl;
-		std::cin >> command;
+		_mutex.lock();
+		//std::cout << "addShapes" << std::endl;
 
-		if (command == "?" || command == "help") {
-			std::cout << "commands:\n\thelp\n\tprint\n\tselect\n\tadd\n\tedit\n\tload\n\tsave\n\tclone\n\trecord\n\tplay\n\tquit" << std::endl;
-		}
-		else if (command == "print") {
-			_anchor.print(std::cout);
-		}
-		else if (command == "record")
+		while(_shapes.size() < 20)
 		{
-			std::cout << "Enter id: ";
-			int id;
-			std::cin >> id;
-			Shape* selection = dynamic_cast<Shape*>(_anchor.getById(id));
-
-			if (!selection)
-				std::cout << "ERROR: Invalid selection" << std::endl;
-			else
-			{
-				std::cout << "Start recording" << std::endl;
-				PathRecorder::getInstance().startRecording(selection);
-			}
+			_shapes.push_back(std::make_unique<ScreenSaverShape>());
 		}
-		else if (command == "play")
+		
+		_mutex.unlock();
+
+		std::this_thread::yield();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
+}
+
+void Program::processTargets()
+{
+	while (true)
+	{
+		_mutex.lock();
+		//std::cout << "processTargets" << std::endl;
+
+		for (auto it = _shapes.begin(); it != _shapes.end(); ++it)
 		{
-			if (PathRecorder::getInstance().hasItem())
+			if (!it->get()->getTarget())
 			{
-				PathRecorder::getInstance().startPlaying();
-				std::cout << "Start playing" << std::endl;
-			}
-			else
-			{
-				std::cout << "Cannot start playing, execute record ad first" << std::endl;
+				int lockCounter = 3;
+				ScreenSaverShape* sss;
+
+				do
+				{
+					sss = _shapes[Utils::getInstance().getRandomInt(0, _shapes.size())].get();
+				} while (lockCounter-- && sss == it->get());
+
+				if (lockCounter != -1)
+				{
+					it->get()->setTarget(sss);
+				}
 			}
 		}
-		else if (command == "save")
+
+		_mutex.unlock();
+
+		std::this_thread::yield();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
+}
+
+void Program::moveShapes()
+{
+	while (true)
+	{
+		_mutex.lock();
+		//std::cout << "moveShapes" << std::endl;
+
+		for (auto it = _shapes.begin(); it != _shapes.end(); ++it)
 		{
-			try
+			if (it->get()->getTarget() && !it->get()->getDeleteState())
 			{
-				memento.serialize(static_cast<ShapeUnion*>(&_anchor));
-				std::cout << "Done" << std::endl;
-			}
-			catch (std::exception & e)
-			{
-				std::cout << "ERROR: " << e.what() << std::endl;
-			}
-		}
-		else if (command == "load")
-		{
-			try
-			{
-				_anchor = memento.deserialize();
-				_currentSelection = nullptr;
-				std::cout << "Done" << std::endl;
-			}
-			catch (std::exception& e)
-			{
-				std::cout << "ERROR: " << e.what() << std::endl;
-			}
-		}
-		else if (command == "select") {
-			std::cout << "Enter id: ";
-			int id;
-			std::cin >> id;
-			ICanvasComponent* selection = dynamic_cast<ICanvasComponent*>(_anchor.getById(id));
-
-			if (!selection)
-				std::cout << "ERROR: Invalid selection" << std::endl;
-			else
-			{
-				_currentSelection = selection;
-				std::cout << "Done" << std::endl;
-			}
-		}
-		else if (command == "edit") {
-			int id;
-			std::cout << "Enter item's id: ";
-			std::cin >> id;
-			ICanvasComponent* shape;
-			if (!(shape = dynamic_cast<ICanvasComponent*>(_anchor.getById(id))))
-			{
-				std::cout << "ERROR: Invalid id!" << std::endl;
-				continue;
-			}
-			changeProps(shape);
-		}
-		else if (command == "clone")
-		{
-			int id;
-			std::cout << "Enter id to clone: ";
-			std::cin >> id;
-			ICanvasComponent* toClone = dynamic_cast<ICanvasComponent*>(_anchor.getById(id));
-
-			if (!toClone)
-			{
-				std::cout << "Invalid id: " << id << std::endl;
-				continue;
-			}
-			
-			int parentId;
-			std::cout << "Enter parent id: ";
-			std::cin >> parentId;
-			ShapeUnion* newParent = dynamic_cast<ShapeUnion*>(_anchor.getById(parentId));
-
-			if (!newParent)
-			{
-				std::cout << "Invalid id: " << id << std::endl;
-				continue;
-			}
-
-			std::unique_ptr<ICanvasComponent> clone = std::unique_ptr<ICanvasComponent>(static_cast<ICanvasComponent*>(toClone->deepClone()));
-			newParent->add(clone);
-		}
-		else if (command == "add") {
-			int parentId;
-			std::cout << "Enter parent id: ";
-			std::cin >> parentId;
-			ShapeUnion* parent;
-
-			if (!(parent = dynamic_cast<ShapeUnion*>(_anchor.getById(parentId)))) {
-				std::cout << "ERROR: Invalid parent" << std::endl;
-				continue;
-			}
-
-			int Id;
-			std::cout << "Enter new item's id: ";
-			std::cin >> Id;
-
-			if (_anchor.getById(Id))
-			{
-				std::cout << "ERROR: Id already exist!" << std::endl;
-				continue;
-			}
-
-			std::string type;
-			std::cout << "Enter type: <union/square/triangle/star/octagon>: ";
-			std::cin >> type;
-
-			ICanvasComponent* newElem;
-
-			if (type == "union") {
-				newElem = new ShapeUnion();
-			}
-			else {
-				newElem = static_cast<ICanvasComponent*>(ShapeFactory::getShape(type));
-				if (newElem == nullptr)
-					continue;
-			}
+				if (it->get()->isIntersects(*it->get()->getTarget()))
+				{
+					it->get()->getTarget()->setDeleteState(true);
+					it->get()->setDeleteState(true);
+				}
 				
-			newElem->setId(Id);
-			
-			if (type != "union")
-				changeProps(newElem);
-
-			auto toAdd = std::unique_ptr<ICanvasComponent>(newElem);
-			parent->add(toAdd);
+				glm::vec2 direction = it->get()->getTarget()->getPos() - it->get()->getPos();
+				direction = glm::normalize(direction);
+				direction *= 0.005f;
+				//std::cout << "X: " << direction.x << " Y: " << direction.y << std::endl;
+				it->get()->translate(direction);
+			}
 		}
 
-	} while (command != "quit");
+		_mutex.unlock();
 
-	Window::hideConsole();
-	Window::getInstance().showWindow();
-
+		std::this_thread::yield();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
 }
+
+void Program::deleteShapes()
+{
+	while (true)
+	{
+		_mutex.lock();
+		//std::cout << "deleteShapes" << std::endl;
+
+		
+		auto it = _shapes.begin();
+		while (it != _shapes.end())
+		{
+			if (it->get()->getDeleteState())
+			{
+				for (auto it_ = _shapes.begin(); it_ != _shapes.end(); ++it_)
+				{
+					if (it_->get()->getTarget() == it->get())
+					{
+						it_->get()->setTarget(nullptr);
+					}
+				}
+				
+				it = _shapes.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		_mutex.unlock();
+
+		std::this_thread::yield();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
+}
+
 
 Program& Program::getInstance()
 {
@@ -303,22 +163,9 @@ Program& Program::getInstance()
 
 void Program::start()
 {
-	menu();
-
-	glfwSwapInterval(1);
-	while (!glfwWindowShouldClose(Window::getInstance().getGLFWHandle()))
-	{
-		glfwPollEvents();
-
-		RenderSystem::clearDisplay(1, 1, 1);
-		if (_currentSelection)
-		{
-			_currentSelection->translate(_moveAxis * _moveSpeed);
-			_currentSelection->clampCanvasFit();
-		}
-		PathRecorder::getInstance().execute();
-		_anchor.draw();
-
-		glfwSwapBuffers(Window::getInstance().getGLFWHandle());
-	}
+	std::thread([this] {processTargets(); }).detach();
+	std::thread([this] {moveShapes(); }).detach();
+	std::thread([this] {deleteShapes(); }).detach();
+	std::thread([&] {addShapes(); }).detach();
+	draw();
 }

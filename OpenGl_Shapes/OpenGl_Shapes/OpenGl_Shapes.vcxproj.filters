@@ -47,19 +47,10 @@
     <ClInclude Include="Shape.h">
       <Filter>Header Files\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeUnion.h">
-      <Filter>Header Files\Shape</Filter>
-    </ClInclude>
     <ClInclude Include="Interfaces.h">
       <Filter>Header Files\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeFactory.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Memento.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="PathRecorder.h">
+    <ClInclude Include="Utils.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -88,17 +79,14 @@
     <ClCompile Include="BoundingBox.h">
       <Filter>Header Files\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="ShapeUnion.cpp">
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenSaverShape.h">
+      <Filter>Header Files\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenSaverShape.cpp">
       <Filter>Source Files\Shape</Filter>
-    </ClCompile>
-    <ClCompile Include="Memento.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="ShapeFactory.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="PathRecorder.cpp">
-      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

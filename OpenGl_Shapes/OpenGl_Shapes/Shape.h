@@ -10,9 +10,6 @@
 #include "BoundingBox.h"
 #include "RenderSystem.h"
 
-class Memento;
-class PathRecorder;
-
 class Shape: public ICanvasComponent {
 private:
 	const float DEFORM_FACTOR = 2.0f;
@@ -25,7 +22,7 @@ private:
 	bool _isHidden;
 	bool _isDeformed;
 	bool _hasTrail;
-	std::shared_ptr<Buffer> _buffer;
+
 	std::deque<glm::vec2> _trail;
 
 	BoundingBox calcBoundingBox() const override;
@@ -38,8 +35,10 @@ private:
 	friend class Memento;
 
 public:
+	std::shared_ptr<Buffer> _buffer;
 	void setScale(const glm::vec2&) override;
 	void setPos(const glm::vec2&) override;
+	const glm::vec2& getPos() const;
 	void setColor(const glm::vec4&) override;
 	void setTrail(bool) override;
 	void setDeformed(bool) override;
@@ -48,6 +47,8 @@ public:
 	void translate(const glm::vec2&) override;
 	void clampCanvasFit() override;
 
+	bool isIntersects(Shape& component) const;
+
 	void draw() override;
 
 	IClonable* deepClone() const override;
@@ -55,5 +56,6 @@ public:
 	void print(std::ostream& stream, std::string indent = "") const override;
 
 	explicit Shape(std::shared_ptr<Buffer>);
+	Shape();
 
 };

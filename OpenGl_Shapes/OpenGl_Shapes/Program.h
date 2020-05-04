@@ -9,27 +9,28 @@
 #include <string>
 #include "Buffer.h"
 #include "Shape.h"
-#include "ShapeUnion.h"
 #include "RenderSystem.h"
 #include "Window.h"
-#include "ShapeFactory.h"
 #include "Interfaces.h"
-#include "Memento.h"
-#include "PathRecorder.h"
+#include <thread>
+#include <mutex>
+#include "ScreenSaverShape.h"
 
 class Program {
 private:
 	Program();
-	static void onKeyCallback(KeyCode, Action, Modifier);
-	void menu();
 
 	Program& operator=(const Program&) = delete;
 	Program(const Program&) = delete;
 
-	glm::vec2 _moveAxis;
-	float _moveSpeed;
-	ICanvasComponent* _currentSelection;
-	ShapeUnion _anchor;
+	std::vector<std::unique_ptr<ScreenSaverShape>> _shapes;
+	std::mutex _mutex;
+
+	void draw();
+	void addShapes();
+	void processTargets();
+	void moveShapes();
+	void deleteShapes();
 
 public:
 	static Program& getInstance();
