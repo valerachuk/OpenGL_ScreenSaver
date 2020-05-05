@@ -11,7 +11,6 @@
 #include "Shape.h"
 #include "RenderSystem.h"
 #include "Window.h"
-#include "Interfaces.h"
 #include <thread>
 #include <mutex>
 #include "ScreenSaverShape.h"

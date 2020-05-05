@@ -3,16 +3,16 @@
 #include <iostream>
 #include <ctime>
 
-class Utils
+class Random
 {
 private:
-	Utils();
+	Random();
 public:
-	Utils(const Utils&) = delete;
+	Random(const Random&) = delete;
 
-	Utils& operator=(const Utils&) = delete;
+	Random& operator=(const Random&) = delete;
 	int getRandomInt(int a, int b);
 	float getRandomFloat(float a, float b);
 
-	static Utils& getInstance();
+	static Random& getInstance();
 };

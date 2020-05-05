@@ -11,11 +11,12 @@ Program::Program()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	ScreenSaverShape(); //don't works without it :(
 }
 
 void Program::draw()
 {
-	auto shape = new ScreenSaverShape();
 	glfwSwapInterval(1);
 	while (!glfwWindowShouldClose(Window::getInstance().getGLFWHandle()))
 	{
@@ -69,7 +70,7 @@ void Program::processTargets()
 
 				do
 				{
-					sss = _shapes[Utils::getInstance().getRandomInt(0, _shapes.size())].get();
+					sss = _shapes[Random::getInstance().getRandomInt(0, _shapes.size())].get();
 				} while (lockCounter-- && sss == it->get());
 
 				if (lockCounter != -1)

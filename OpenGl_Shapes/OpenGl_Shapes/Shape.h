@@ -6,11 +6,10 @@
 #include <string>
 #include <functional>
 #include "Buffer.h"
-#include "Interfaces.h"
 #include "BoundingBox.h"
 #include "RenderSystem.h"
 
-class Shape: public ICanvasComponent {
+class Shape {
 private:
 	const float DEFORM_FACTOR = 2.0f;
 	const float START_OPACITY = 0.1f;
@@ -25,7 +24,7 @@ private:
 
 	std::deque<glm::vec2> _trail;
 
-	BoundingBox calcBoundingBox() const override;
+	BoundingBox calcBoundingBox() const;
 	glm::mat4 calcShapeMatrix(const glm::vec2&);
 	glm::mat4 calcShapeMatrix();
 	void fillTrail();
@@ -36,24 +35,22 @@ private:
 
 public:
 	std::shared_ptr<Buffer> _buffer;
-	void setScale(const glm::vec2&) override;
-	void setPos(const glm::vec2&) override;
+	void setScale(const glm::vec2&);
+	void setPos(const glm::vec2&);
 	const glm::vec2& getPos() const;
-	void setColor(const glm::vec4&) override;
-	void setTrail(bool) override;
-	void setDeformed(bool) override;
-	void setHidden(bool) override;
+	void setColor(const glm::vec4&);
+	void setTrail(bool);
+	void setDeformed(bool);
+	void setHidden(bool);
 
-	void translate(const glm::vec2&) override;
-	void clampCanvasFit() override;
+	void translate(const glm::vec2&);
+	void clampCanvasFit();
 
 	bool isIntersects(Shape& component) const;
 
-	void draw() override;
+	void draw();
 
-	IClonable* deepClone() const override;
-
-	void print(std::ostream& stream, std::string indent = "") const override;
+	void print(std::ostream& stream, std::string indent = "") const;
 
 	explicit Shape(std::shared_ptr<Buffer>);
 	Shape();

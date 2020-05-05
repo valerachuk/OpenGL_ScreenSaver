@@ -47,10 +47,7 @@
     <ClInclude Include="Shape.h">
       <Filter>Header Files\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces.h">
-      <Filter>Header Files\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
+    <ClInclude Include="Random.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -79,14 +76,14 @@
     <ClCompile Include="BoundingBox.h">
       <Filter>Header Files\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="ScreenSaverShape.h">
       <Filter>Header Files\Shape</Filter>
     </ClCompile>
     <ClCompile Include="ScreenSaverShape.cpp">
       <Filter>Source Files\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

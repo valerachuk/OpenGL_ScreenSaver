@@ -66,12 +66,12 @@ ScreenSaverShape::ScreenSaverShape() : Shape()
 	glm::vec3(0.05f, 0.3f, 0.54f)
 	};
 
-	_buffer = _buffers[Utils::getInstance().getRandomInt(0, 4)];
+	_buffer = _buffers[Random::getInstance().getRandomInt(0, 4)];
 
 	setTrail(true);
-	setPos(glm::vec2(Utils::getInstance().getRandomFloat(-1, 1), Utils::getInstance().getRandomFloat(-1, 1)));
-	setScale(glm::vec2(Utils::getInstance().getRandomFloat(0.1f, 0.2f), Utils::getInstance().getRandomFloat(0.1f, 0.2f)));
-	setColor(glm::vec4(colors[Utils::getInstance().getRandomInt(0, 10)], 1.0f));
+	setPos(glm::vec2(Random::getInstance().getRandomFloat(-1, 1), Random::getInstance().getRandomFloat(-1, 1)));
+	setScale(glm::vec2(Random::getInstance().getRandomFloat(0.1f, 0.2f), Random::getInstance().getRandomFloat(0.1f, 0.2f)));
+	setColor(glm::vec4(colors[Random::getInstance().getRandomInt(0, 10)], 1.0f));
 }
 
 bool ScreenSaverShape::getDeleteState()
